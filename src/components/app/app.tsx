@@ -1,12 +1,12 @@
 import MainScreen from '../../pages/main-screen/main-screen';
 
 type AppScreenProps = {
-  placeCardsCount: number;
+  offersCount: number;
 }
 
-function App({placeCardsCount}: AppScreenProps): JSX.Element {
+function App({offersCount}: AppScreenProps): JSX.Element {
   return (
-    <MainScreen placeCardsCount={placeCardsCount}/>
+    <MainScreen offersCount={offersCount}/>
   );
 }
 

@@ -1,5 +1,5 @@
 export const Setting = {
-  PlaceCardsCount: 5
+  OffersCount: 312
 };
 
 export const CITIES = {
