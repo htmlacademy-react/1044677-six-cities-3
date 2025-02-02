@@ -35,8 +35,8 @@ function PlaceCard({img, priceValue, rating, placeCardName, placeCardType}: Plac
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}></span>
-            <span className="visually-hidden">{rating}</span>
+            <span style={{width: `${rating}%`}}></span>
+            <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">

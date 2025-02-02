@@ -70,11 +70,11 @@ function MainScreen({offersCount}: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={0} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
-                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={0} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
-                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={0} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
-                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={0} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
-                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={0} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
+                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={80} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
+                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={100} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
+                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={60} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
+                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={90} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
+                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={30} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
               </div>
             </section>
             <div className="cities__right-section">
