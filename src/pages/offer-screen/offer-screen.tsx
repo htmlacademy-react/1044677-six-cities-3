@@ -1,6 +1,10 @@
+import Header from '../../components/header/header';
+
 function OfferScreen(): JSX.Element {
   return (
     <div className="page">
+      <Header/>
+
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">
@@ -142,7 +146,7 @@ function OfferScreen(): JSX.Element {
                       <p className="reviews__text">
                         A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
                       </p>
-                      <time className="reviews__time" datetime="2019-04-24">April 2019</time>
+                      <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
                     </div>
                   </li>
                 </ul>
@@ -163,21 +167,21 @@ function OfferScreen(): JSX.Element {
                       </svg>
                     </label>
 
-                    <input className="form__rating-input visually-hidden" name="rating" value="3" id="3-stars" type="radio">
+                    <input className="form__rating-input visually-hidden" name="rating" value="3" id="3-stars" type="radio"/>
                     <label htmlFor="3-stars" className="reviews__rating-label form__rating-label" title="not bad">
                       <svg className="form__star-image" width="37" height="33">
                         <use xlinkHref="#icon-star"></use>
                       </svg>
                     </label>
 
-                    <input className="form__rating-input visually-hidden" name="rating" value="2" id="2-stars" type="radio">
+                    <input className="form__rating-input visually-hidden" name="rating" value="2" id="2-stars" type="radio"/>
                     <label htmlFor="2-stars" className="reviews__rating-label form__rating-label" title="badly">
                       <svg className="form__star-image" width="37" height="33">
                         <use xlinkHref="#icon-star"></use>
                       </svg>
                     </label>
 
-                    <input className="form__rating-input visually-hidden" name="rating" value="1" id="1-star" type="radio">
+                    <input className="form__rating-input visually-hidden" name="rating" value="1" id="1-star" type="radio"/>
                     <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
                       <svg className="form__star-image" width="37" height="33">
                         <use xlinkHref="#icon-star"></use>
