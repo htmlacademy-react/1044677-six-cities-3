@@ -1,5 +1,5 @@
 import Header from '../../components/header/header';
-
+import Footer from '../../components/footer/footer';
 function FavoritesScreen(): JSX.Element {
   return (
     <div className="page">
@@ -134,6 +134,7 @@ function FavoritesScreen(): JSX.Element {
           </section>
         </div>
       </main>
+      <Footer/>
     </div>
   );
 }
