@@ -1,7 +1,8 @@
-import Header from '../../components/header/header';
 import { CITIES } from '../../const';
+import { Helmet } from 'react-helmet-async';
+import Header from '../../components/header/header';
+import { placeCards } from '../../mocks/place-cards';
 import PlaceCard from '../../components/place-card/place-card';
-
 type MainScreenProps = {
   offersCount: number;
 }
@@ -9,43 +10,22 @@ type MainScreenProps = {
 function MainScreen({offersCount}: MainScreenProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
+      <Helmet>
+        <title>6 cities</title>
+      </Helmet>
       <Header/>
-
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>{CITIES.PARIS}</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>{CITIES.COLOGNE}</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>{CITIES.BRUSSELS}</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>{CITIES.AMSTERDAM}</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>{CITIES.HAMBURG}</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>{CITIES.DUSSELDORF}</span>
-                </a>
-              </li>
+              {CITIES.map((city) => (
+                <li className="locations__item" key={city}>
+                  <a className="locations__item-link tabs__item" href="#">
+                    <span>{city}</span>
+                  </a>
+                </li>
+              ))}
             </ul>
           </section>
         </div>
@@ -70,11 +50,16 @@ function MainScreen({offersCount}: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={80} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
-                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={100} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
-                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={60} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
-                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={90} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
-                <PlaceCard img={'img/apartment-01.jpg'} priceValue={120} rating={30} placeCardName={'Beautiful &amp; luxurious apartment at great location'} placeCardType={'Apartment'}/>
+                {placeCards.map((card) => (
+                  <PlaceCard
+                    key={card.id}
+                    img={card.img}
+                    priceValue={card.priceValue}
+                    rating={card.rating}
+                    placeCardName={card.placeCardName}
+                    placeCardType={card.placeCardType}
+                  />
+                ))}
               </div>
             </section>
             <div className="cities__right-section">

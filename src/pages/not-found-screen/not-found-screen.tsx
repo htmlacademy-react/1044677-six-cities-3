@@ -1,3 +1,5 @@
+import { Helmet } from 'react-helmet-async';
+
 function NotFoundScreen(): JSX.Element {
   return (
     <body>
@@ -16,6 +18,9 @@ function NotFoundScreen(): JSX.Element {
       </div>
 
       <div className="page page--gray page--login">
+        <Helmet>
+          <title>6 cities: not found</title>
+        </Helmet>
         <header className="header">
           <div className="container">
             <div className="header__wrapper">
