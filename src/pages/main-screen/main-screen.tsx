@@ -1,4 +1,4 @@
-import { CITIES } from '../../const';
+import { CITIES, DEFAULT_CITY, City } from '../../const';
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { placeCards } from '../../mocks/place-cards';
@@ -8,6 +8,8 @@ type MainScreenProps = {
 }
 
 function MainScreen({offersCount}: MainScreenProps): JSX.Element {
+  const isActive: City = DEFAULT_CITY;
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -21,7 +23,7 @@ function MainScreen({offersCount}: MainScreenProps): JSX.Element {
             <ul className="locations__list tabs__list">
               {CITIES.map((city) => (
                 <li className="locations__item" key={city}>
-                  <a className="locations__item-link tabs__item" href="#">
+                  <a className={`locations__item-link tabs__item ${city === isActive ? ' tabs__item--active' : ''}`} href="#">
                     <span>{city}</span>
                   </a>
                 </li>

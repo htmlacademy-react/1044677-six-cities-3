@@ -1,8 +1,10 @@
+export type City = 'Paris'|'Cologne'|'Brussels'|'Amsterdam'|'Hamburg'|'Dusseldorf';
+
 export const Setting = {
   OffersCount: 312
 };
 
-export const CITIES = [
+export const CITIES: City[] = [
   'Paris',
   'Cologne',
   'Brussels',
@@ -11,6 +13,7 @@ export const CITIES = [
   'Dusseldorf'
 ];
 
+export const DEFAULT_CITY: City = CITIES[0];
 export enum AppRoute {
   Main = '/',
   Login = '/login',
