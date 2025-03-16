@@ -37,8 +37,8 @@ export const offers: Offer[] = [
   //   id: 5,
   //   img: 'img/apartment-01.jpg',
   //   priceValue: 120,
-  //   rating: 30,
-  //   placeCardName: 'Beautiful & luxurious apartment at great location',
-  //   placeCardType: 'Apartment'
+  //   rating: 70,
+  //   placeCardName: 'Beautiful studio at great location',
+  //   placeCardType: 'Studio'
   // }
 ];

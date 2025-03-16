@@ -1,15 +1,16 @@
 import { City } from '../../types/city';
 import { Helmet } from 'react-helmet-async';
-import { offers } from '../../mocks/offers';
 import { CITIES, DEFAULT_CITY } from '../../const';
 import Header from '../../components/header/header';
 import PlaceCard from '../../components/place-card/place-card';
+import { Offer } from '../../types/offer';
 
 type MainScreenProps = {
   offersCount: number;
+  offers: Offer[];
 }
 
-function MainScreen({offersCount}: MainScreenProps): JSX.Element {
+function MainScreen({offersCount, offers}: MainScreenProps): JSX.Element {
   const isActive: City = DEFAULT_CITY;
 
   return (

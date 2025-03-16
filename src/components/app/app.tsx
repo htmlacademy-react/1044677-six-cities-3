@@ -1,3 +1,4 @@
+import { Offer } from '../../types/offer';
 import {HelmetProvider} from 'react-helmet-async';
 import PrivateRoute from '../private-route/private-route';
 import { AppRoute, AuthorizationStatus } from '../../const';
@@ -10,16 +11,17 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 
 type AppScreenProps = {
   offersCount: number;
+  offers: Offer[];
 }
 
-function App({offersCount}: AppScreenProps): JSX.Element {
+function App({offersCount, offers}: AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<MainScreen offersCount={offersCount}/>}
+            element={<MainScreen offersCount={offersCount} offers={offers} />}
           />
           <Route
             path={AppRoute.Login}
