@@ -1,10 +1,4 @@
-type PlaceCardProps = {
-  img: string;
-  priceValue: number;
-  rating: number;
-  placeCardName: string;
-  placeCardType: string;
-}
+import { PlaceCardProps } from '../../types/place-card-props';
 
 function PlaceCard({img, priceValue, rating, placeCardName, placeCardType}: PlaceCardProps): JSX.Element {
   return (

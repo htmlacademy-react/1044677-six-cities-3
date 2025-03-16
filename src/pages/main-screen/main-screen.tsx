@@ -1,8 +1,10 @@
-import { CITIES, DEFAULT_CITY, City } from '../../const';
+import { City } from '../../types/city';
 import { Helmet } from 'react-helmet-async';
+import { offers } from '../../mocks/offers';
+import { CITIES, DEFAULT_CITY } from '../../const';
 import Header from '../../components/header/header';
-import { placeCards } from '../../mocks/place-cards';
 import PlaceCard from '../../components/place-card/place-card';
+
 type MainScreenProps = {
   offersCount: number;
 }
@@ -52,14 +54,14 @@ function MainScreen({offersCount}: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {placeCards.map((card) => (
+                {offers.map((offer) => (
                   <PlaceCard
-                    key={card.id}
-                    img={card.img}
-                    priceValue={card.priceValue}
-                    rating={card.rating}
-                    placeCardName={card.placeCardName}
-                    placeCardType={card.placeCardType}
+                    key={offer.id}
+                    img={offer.img}
+                    priceValue={offer.priceValue}
+                    rating={offer.rating}
+                    placeCardName={offer.placeCardName}
+                    placeCardType={offer.placeCardType}
                   />
                 ))}
               </div>
