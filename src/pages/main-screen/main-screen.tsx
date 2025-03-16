@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { City } from '../../types/city';
 import { Offer } from '../../types/offer';
 import { Helmet } from 'react-helmet-async';
@@ -11,7 +12,7 @@ type MainScreenProps = {
 }
 
 function MainScreen({offersCount, offers}: MainScreenProps): JSX.Element {
-  const isActive: City = DEFAULT_CITY;
+  const [activeCity, setActiveCity] = useState<City>(DEFAULT_CITY);
 
   return (
     <div className="page page--gray page--main">
@@ -26,7 +27,14 @@ function MainScreen({offersCount, offers}: MainScreenProps): JSX.Element {
             <ul className="locations__list tabs__list">
               {CITIES.map((city) => (
                 <li className="locations__item" key={city}>
-                  <a className={`locations__item-link tabs__item ${city === isActive ? ' tabs__item--active' : ''}`} href="#">
+                  <a
+                    className={`locations__item-link tabs__item ${city === activeCity ? ' tabs__item--active' : ''}`}
+                    href="#"
+                    onClick={(evt) => {
+                      evt.preventDefault();
+                      setActiveCity(city);
+                    }}
+                  >
                     <span>{city}</span>
                   </a>
                 </li>
