@@ -5,4 +5,5 @@ export type Offer = {
   rating: number;
   placeCardName: string;
   placeCardType: string;
+  isFavorite: boolean;
 };

@@ -7,7 +7,8 @@ export const offers: Offer[] = [
     priceValue: 100,
     rating: 80,
     placeCardName: 'Beautiful flat in the center of the city',
-    placeCardType: 'Flat'
+    placeCardType: 'Flat',
+    isFavorite: true
   },
   {
     id: 2,
@@ -15,7 +16,8 @@ export const offers: Offer[] = [
     priceValue: 220,
     rating: 100,
     placeCardName: 'Beautiful & luxurious apartment at great location',
-    placeCardType: 'Apartment'
+    placeCardType: 'Apartment',
+    isFavorite: true
   },
   {
     id: 3,
@@ -23,7 +25,8 @@ export const offers: Offer[] = [
     priceValue: 20,
     rating: 60,
     placeCardName: 'Cozy hostel room',
-    placeCardType: 'Hostel'
+    placeCardType: 'Hostel',
+    isFavorite: true
   },
   {
     id: 4,
@@ -31,7 +34,8 @@ export const offers: Offer[] = [
     priceValue: 300,
     rating: 90,
     placeCardName: 'Luxurious apartment in the city center',
-    placeCardType: 'Apartment'
+    placeCardType: 'Apartment',
+    isFavorite: true
   },
   // {
   //   id: 5,
@@ -39,6 +43,7 @@ export const offers: Offer[] = [
   //   priceValue: 120,
   //   rating: 70,
   //   placeCardName: 'Beautiful studio at great location',
-  //   placeCardType: 'Studio'
+  //   placeCardType: 'Studio',
+  //   isFavorite: true
   // }
 ];
