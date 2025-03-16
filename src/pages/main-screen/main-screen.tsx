@@ -13,6 +13,7 @@ type MainScreenProps = {
 
 function MainScreen({offersCount, offers}: MainScreenProps): JSX.Element {
   const [activeCity, setActiveCity] = useState<City>(DEFAULT_CITY);
+  const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
 
   return (
     <div className="page page--gray page--main">
@@ -62,7 +63,10 @@ function MainScreen({offersCount, offers}: MainScreenProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <OffersList offers={offers} />
+              <OffersList
+                offers={offers}
+                onActiveOfferChange={setActiveOffer}
+              />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

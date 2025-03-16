@@ -2,13 +2,17 @@ import { Offer } from '../../types/offer';
 
 type PlaceCardProps = {
   offer: Offer;
+  onMouseEnter: () => void;
 }
 
-function PlaceCard({ offer }: PlaceCardProps): JSX.Element {
+function PlaceCard({ offer, onMouseEnter }: PlaceCardProps): JSX.Element {
   const { img, priceValue, rating, placeCardName, placeCardType } = offer;
 
   return (
-    <article className="cities__card place-card">
+    <article
+      className="cities__card place-card"
+      onMouseEnter={onMouseEnter}
+    >
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
           <img className="place-card__image"
