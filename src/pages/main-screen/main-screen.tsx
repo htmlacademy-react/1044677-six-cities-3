@@ -1,9 +1,9 @@
 import { City } from '../../types/city';
+import { Offer } from '../../types/offer';
 import { Helmet } from 'react-helmet-async';
 import { CITIES, DEFAULT_CITY } from '../../const';
 import Header from '../../components/header/header';
 import PlaceCard from '../../components/place-card/place-card';
-import { Offer } from '../../types/offer';
 
 type MainScreenProps = {
   offersCount: number;
@@ -58,11 +58,7 @@ function MainScreen({offersCount, offers}: MainScreenProps): JSX.Element {
                 {offers.map((offer) => (
                   <PlaceCard
                     key={offer.id}
-                    img={offer.img}
-                    priceValue={offer.priceValue}
-                    rating={offer.rating}
-                    placeCardName={offer.placeCardName}
-                    placeCardType={offer.placeCardType}
+                    offer={offer}
                   />
                 ))}
               </div>

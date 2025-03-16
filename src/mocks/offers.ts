@@ -11,7 +11,7 @@ export const offers: Offer[] = [
   },
   {
     id: 2,
-    img: 'img/apartment-01.jpg',
+    img: 'img/apartment-02.jpg',
     priceValue: 220,
     rating: 100,
     placeCardName: 'Beautiful & luxurious apartment at great location',
@@ -19,7 +19,7 @@ export const offers: Offer[] = [
   },
   {
     id: 3,
-    img: 'img/apartment-01.jpg',
+    img: 'img/apartment-03.jpg',
     priceValue: 20,
     rating: 60,
     placeCardName: 'Cozy hostel room',
@@ -27,7 +27,7 @@ export const offers: Offer[] = [
   },
   {
     id: 4,
-    img: 'img/apartment-01.jpg',
+    img: 'img/apartment-02.jpg',
     priceValue: 300,
     rating: 90,
     placeCardName: 'Luxurious apartment in the city center',
