@@ -1,9 +1,5 @@
 import { City } from './types/city';
 
-export const Setting = {
-  OffersCount: 312
-};
-
 export const CITIES: City[] = [
   'Paris',
   'Cologne',

@@ -10,18 +10,17 @@ import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 
 type AppScreenProps = {
-  offersCount: number;
   offers: Offer[];
 }
 
-function App({offersCount, offers}: AppScreenProps): JSX.Element {
+function App({offers}: AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<MainScreen offersCount={offersCount} offers={offers} />}
+            element={<MainScreen offers={offers} />}
           />
           <Route
             path={AppRoute.Login}
