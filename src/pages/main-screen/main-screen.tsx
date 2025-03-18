@@ -12,7 +12,7 @@ type MainScreenProps = {
 
 function MainScreen({offers}: MainScreenProps): JSX.Element {
   const [activeCity, setActiveCity] = useState<City>(DEFAULT_CITY);
-  const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
+  const [ , setActiveOffer] = useState<Offer | null>(null);
 
   return (
     <div className="page page--gray page--main">
