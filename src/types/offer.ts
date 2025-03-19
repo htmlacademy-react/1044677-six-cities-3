@@ -6,4 +6,8 @@ export type Offer = {
   placeCardName: string;
   placeCardType: string;
   isFavorite: boolean;
+  isPremium: boolean;
+  city: {
+    name: string;
+  };
 };

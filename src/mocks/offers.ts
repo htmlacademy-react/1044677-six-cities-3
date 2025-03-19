@@ -8,7 +8,11 @@ export const offers: Offer[] = [
     rating: 80,
     placeCardName: 'Beautiful flat in the center of the city',
     placeCardType: 'Flat',
-    isFavorite: true
+    isFavorite: true,
+    isPremium: true,
+    city: {
+      name: 'Amsterdam',
+    },
   },
   {
     id: 2,
@@ -17,7 +21,11 @@ export const offers: Offer[] = [
     rating: 100,
     placeCardName: 'Beautiful & luxurious apartment at great location',
     placeCardType: 'Apartment',
-    isFavorite: true
+    isFavorite: true,
+    isPremium: true,
+    city: {
+      name: 'Amsterdam',
+    },
   },
   {
     id: 3,
@@ -26,7 +34,11 @@ export const offers: Offer[] = [
     rating: 60,
     placeCardName: 'Cozy hostel room',
     placeCardType: 'Hostel',
-    isFavorite: true
+    isFavorite: true,
+    isPremium: false,
+    city: {
+      name: 'Cologne',
+    },
   },
   {
     id: 4,
@@ -35,15 +47,10 @@ export const offers: Offer[] = [
     rating: 90,
     placeCardName: 'Luxurious apartment in the city center',
     placeCardType: 'Apartment',
-    isFavorite: true
-  },
-  // {
-  //   id: 5,
-  //   img: 'img/apartment-01.jpg',
-  //   priceValue: 120,
-  //   rating: 70,
-  //   placeCardName: 'Beautiful studio at great location',
-  //   placeCardType: 'Studio',
-  //   isFavorite: true
-  // }
+    isFavorite: true,
+    isPremium: false,
+    city: {
+      name: 'Hamburg',
+    },
+  }
 ];
