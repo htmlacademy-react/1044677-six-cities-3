@@ -34,7 +34,7 @@ export const offers: Offer[] = [
     rating: 60,
     placeCardName: 'Cozy hostel room',
     placeCardType: 'Hostel',
-    isFavorite: true,
+    isFavorite: false,
     isPremium: false,
     city: {
       name: 'Cologne',
