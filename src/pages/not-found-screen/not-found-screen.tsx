@@ -52,4 +52,5 @@ function NotFoundScreen(): JSX.Element {
     </body>
   );
 }
+
 export default NotFoundScreen;

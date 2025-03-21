@@ -1,24 +1,35 @@
+import { Link } from 'react-router-dom';
+import { Offer } from '../../types/offer';
+
 type PlaceCardProps = {
-  img: string;
-  priceValue: number;
-  rating: number;
-  placeCardName: string;
-  placeCardType: string;
+  offer: Offer;
+  onMouseEnter: () => void;
+  onMouseLeave?: () => void;
 }
 
-function PlaceCard({img, priceValue, rating, placeCardName, placeCardType}: PlaceCardProps): JSX.Element {
+function PlaceCard({ offer, onMouseEnter, onMouseLeave }: PlaceCardProps): JSX.Element {
+  const { id, img, priceValue, rating, placeCardName, placeCardType, isPremium, isFavorite } = offer;
+
   return (
-    <article className="cities__card place-card">
+    <article
+      className="cities__card place-card"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {isPremium && (
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>
+      )}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
-          <img
-            className="place-card__image"
+        <Link to={`/offer/${id}`}>
+          <img className="place-card__image"
             src={img}
             width="260"
             height="200"
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -26,11 +37,11 @@ function PlaceCard({img, priceValue, rating, placeCardName, placeCardType}: Plac
             <b className="place-card__price-value">&euro;{priceValue}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+          <button className={`place-card__bookmark-button ${isFavorite ? 'place-card__bookmark-button--active' : ''} button`} type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
-            <span className="visually-hidden">In bookmarks</span>
+            <span className="visually-hidden">To bookmarks</span>
           </button>
         </div>
         <div className="place-card__rating rating">
@@ -40,7 +51,9 @@ function PlaceCard({img, priceValue, rating, placeCardName, placeCardType}: Plac
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{placeCardName}</a>
+          <Link to={`/offer/${id}`}>
+            {placeCardName}
+          </Link>
         </h2>
         <p className="place-card__type">{placeCardType}</p>
       </div>

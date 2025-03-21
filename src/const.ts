@@ -1,8 +1,4 @@
-export type City = 'Paris'|'Cologne'|'Brussels'|'Amsterdam'|'Hamburg'|'Dusseldorf';
-
-export const Setting = {
-  OffersCount: 312
-};
+import { City } from './types/city';
 
 export const CITIES: City[] = [
   'Paris',
@@ -14,6 +10,15 @@ export const CITIES: City[] = [
 ];
 
 export const DEFAULT_CITY: City = CITIES[0];
+
+export const RATING_TITLES = [
+  { value: 5, title: 'perfect' },
+  { value: 4, title: 'good' },
+  { value: 3, title: 'not bad' },
+  { value: 2, title: 'badly' },
+  { value: 1, title: 'terribly' }
+];
+
 export enum AppRoute {
   Main = '/',
   Login = '/login',
