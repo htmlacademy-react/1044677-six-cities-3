@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { City } from '../../types/city';
 import { Offer } from '../../types/offer';
+import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import { CITIES, DEFAULT_CITY } from '../../const';
 import Header from '../../components/header/header';
@@ -11,8 +11,10 @@ type MainScreenProps = {
 }
 
 function MainScreen({offers}: MainScreenProps): JSX.Element {
-  const [activeCity, setActiveCity] = useState<City>(DEFAULT_CITY);
-  const [ , setActiveOffer] = useState<Offer | null>(null);
+  const [activeCity, setActiveCity] = useState<string>(DEFAULT_CITY.title);
+  const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
+  const cityOffers = offers.filter((offer) => offer.city === activeCity);
+  const currentCity = CITIES.find((city) => city.title === activeCity) || DEFAULT_CITY;
 
   return (
     <div className="page page--gray page--main">
@@ -26,16 +28,16 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
           <section className="locations container">
             <ul className="locations__list tabs__list">
               {CITIES.map((city) => (
-                <li className="locations__item" key={city}>
+                <li className="locations__item" key={city.title}>
                   <a
-                    className={`locations__item-link tabs__item ${city === activeCity ? ' tabs__item--active' : ''}`}
+                    className={`locations__item-link tabs__item ${city.title === activeCity ? ' tabs__item--active' : ''}`}
                     href="#"
                     onClick={(evt) => {
                       evt.preventDefault();
-                      setActiveCity(city);
+                      setActiveCity(city.title);
                     }}
                   >
-                    <span>{city}</span>
+                    <span>{city.title}</span>
                   </a>
                 </li>
               ))}
@@ -46,11 +48,11 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
+              <b className="places__found">{cityOffers.length} places to stay in {activeCity}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
-                Popular
+                  Popular
                   <svg className="places__sorting-arrow" width="7" height="4">
                     <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
@@ -63,12 +65,19 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <OffersList
-                offers={offers}
-                onActiveOfferChange={setActiveOffer}
+                offers={cityOffers}
+                onMouseEnter={setActiveOffer}
+                onMouseLeave={() => setActiveOffer(null)}
               />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map
+                  city={currentCity}
+                  offers={cityOffers}
+                  activeOffer={activeOffer}
+                />
+              </section>
             </div>
           </div>
         </div>
