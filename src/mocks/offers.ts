@@ -10,9 +10,9 @@ export const offers: Offer[] = [
     placeCardType: 'Flat',
     isFavorite: true,
     isPremium: true,
-    city: {
-      name: 'Amsterdam',
-    },
+    city: 'Amsterdam',
+    lat: 52.3909553943508,
+    lng: 4.85309666406198
   },
   {
     id: 2,
@@ -23,9 +23,9 @@ export const offers: Offer[] = [
     placeCardType: 'Apartment',
     isFavorite: true,
     isPremium: true,
-    city: {
-      name: 'Amsterdam',
-    },
+    city: 'Amsterdam',
+    lat: 52.3609553943508,
+    lng: 4.85309666406198
   },
   {
     id: 3,
@@ -36,9 +36,9 @@ export const offers: Offer[] = [
     placeCardType: 'Hostel',
     isFavorite: false,
     isPremium: false,
-    city: {
-      name: 'Cologne',
-    },
+    city: 'Amsterdam',
+    lat: 52.3909553943508,
+    lng: 4.929309666406198
   },
   {
     id: 4,
@@ -49,8 +49,47 @@ export const offers: Offer[] = [
     placeCardType: 'Apartment',
     isFavorite: true,
     isPremium: false,
-    city: {
-      name: 'Hamburg',
-    },
+    city: 'Amsterdam',
+    lat: 52.3809553943508,
+    lng: 4.939309666406198
+  },
+  {
+    id: 5,
+    img: 'img/apartment-03.jpg',
+    priceValue: 200,
+    rating: 100,
+    placeCardName: 'Cozy apartment room',
+    placeCardType: 'Apartment',
+    isFavorite: false,
+    isPremium: true,
+    city: 'Cologne',
+    lat: 50.935173,
+    lng: 6.953101
+  },
+  {
+    id: 6,
+    img: 'img/apartment-02.jpg',
+    priceValue: 3000,
+    rating: 100,
+    placeCardName: 'Luxurious apartment in the city center',
+    placeCardType: 'Apartment',
+    isFavorite: true,
+    isPremium: true,
+    city: 'Hamburg',
+    lat: 53.551086,
+    lng: 9.993682
+  },
+  {
+    id: 7,
+    img: 'img/apartment-02.jpg',
+    priceValue: 5000,
+    rating: 100,
+    placeCardName: 'Luxurious apartment in the city center',
+    placeCardType: 'Apartment',
+    isFavorite: false,
+    isPremium: true,
+    city: 'Paris',
+    lat: 48.856613,
+    lng: 2.352222
   }
 ];

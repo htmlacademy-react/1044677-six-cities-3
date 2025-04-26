@@ -75,7 +75,7 @@ function CityOffers({city, offers}: {city: string; offers: Offer[]}): JSX.Elemen
 
 function FavoritesScreen({offers}: FavoritesScreenProps): JSX.Element {
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
-  const cities = Array.from(new Set(favoriteOffers.map((offer) => offer.city.name)));
+  const cities = Array.from(new Set(favoriteOffers.map((offer) => offer.city)));
 
   return (
     <div className="page">
@@ -93,7 +93,7 @@ function FavoritesScreen({offers}: FavoritesScreenProps): JSX.Element {
                 <CityOffers
                   key={city}
                   city={city}
-                  offers={favoriteOffers.filter((offer) => offer.city.name === city)}
+                  offers={favoriteOffers.filter((offer) => offer.city === city)}
                 />
               ))}
             </ul>
