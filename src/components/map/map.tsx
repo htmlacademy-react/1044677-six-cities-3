@@ -14,14 +14,14 @@ type MapProps = {
 
 const defaultMarkerIcon = leaflet.icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40]
+  iconSize: [27, 39],
+  iconAnchor: [27, 39]
 });
 
 const activeMarkerIcon = leaflet.icon({
   iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40]
+  iconSize: [27, 39],
+  iconAnchor: [27, 39]
 });
 
 function Map(props: MapProps): JSX.Element {
@@ -50,7 +50,7 @@ function Map(props: MapProps): JSX.Element {
     <section
       className="cities__map map"
       style={{
-        height: '1000px'
+        height: '100%'
       }} ref={mapRef}
     />
   );
