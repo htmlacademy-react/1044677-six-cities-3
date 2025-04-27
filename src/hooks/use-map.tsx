@@ -9,7 +9,6 @@ function useMap(
   const [map, setMap] = useState<Map | null>(null);
   const isInitializedRef = useRef(false);
 
-
   useEffect(() => {
     if (mapRef.current !== null && !isInitializedRef.current) {
       const instance = new Map(mapRef.current, {
