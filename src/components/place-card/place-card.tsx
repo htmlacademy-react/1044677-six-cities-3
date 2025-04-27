@@ -7,8 +7,8 @@ type PlaceCardProps = {
   onMouseLeave?: () => void;
 }
 
-function PlaceCard({ offer, onMouseEnter, onMouseLeave }: PlaceCardProps): JSX.Element {
-  const { id, img, priceValue, rating, placeCardName, placeCardType, isPremium, isFavorite } = offer;
+function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Element {
+  const {id, img, priceValue, rating, placeCardName, placeCardType, isPremium, isFavorite} = offer;
 
   return (
     <article

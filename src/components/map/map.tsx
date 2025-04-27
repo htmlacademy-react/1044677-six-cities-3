@@ -1,11 +1,11 @@
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import {LayerGroup} from 'leaflet';
-import {City} from '../../types/city';
-import {useRef, useEffect} from 'react';
+import { LayerGroup } from 'leaflet';
+import { City } from '../../types/city';
+import { useRef, useEffect } from 'react';
 import useMap from '../../hooks/use-map';
-import {Offers, Offer} from '../../types/offer';
-import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
+import { Offers, Offer } from '../../types/offer';
+import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 
 type MapProps = {
   city: City;
