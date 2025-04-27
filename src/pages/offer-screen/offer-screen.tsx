@@ -12,7 +12,6 @@ type OfferScreenProps = {
 function OfferScreen({offers}: OfferScreenProps): JSX.Element {
   const {id} = useParams<{ id: string }>();
   const offer = offers.find((item) => item.id === Number(id));
-
   if (!offer) {
     return <NotFoundScreen />;
   }

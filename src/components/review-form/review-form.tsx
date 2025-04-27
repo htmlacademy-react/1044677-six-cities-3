@@ -1,5 +1,5 @@
 import { RATING_TITLES } from '../../const';
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, Fragment } from 'react';
 
 function ReviewForm(): JSX.Element {
   const [formData, setFormData] = useState({rating: 0, review: ''});
@@ -27,9 +27,8 @@ function ReviewForm(): JSX.Element {
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {RATING_TITLES.map(({ value, title }) => (
-          <>
+          <Fragment key={`input-${value}`}>
             <input
-              key={`input-${value}`}
               className="form__rating-input visually-hidden"
               name="rating"
               value={value}
@@ -39,7 +38,6 @@ function ReviewForm(): JSX.Element {
               onChange={handleRatingChange}
             />
             <label
-              key={`label-${value}`}
               htmlFor={`${value}-stars`}
               className="reviews__rating-label form__rating-label"
               title={title}
@@ -48,7 +46,7 @@ function ReviewForm(): JSX.Element {
                 <use xlinkHref="#icon-star"></use>
               </svg>
             </label>
-          </>
+          </Fragment>
         ))}
       </div>
       <textarea
@@ -61,11 +59,12 @@ function ReviewForm(): JSX.Element {
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay.
+          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
         <button
           className="reviews__submit form__submit button"
           type="submit"
+          disabled={formData.rating === 0 || formData.review.length < 50 || formData.review.length > 300}
         >
           Submit
         </button>

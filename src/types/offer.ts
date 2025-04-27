@@ -7,7 +7,9 @@ export type Offer = {
   placeCardType: string;
   isFavorite: boolean;
   isPremium: boolean;
-  city: {
-    name: string;
-  };
+  city: string;
+  lat: number;
+  lng: number;
 };
+
+export type Offers = Offer[];
