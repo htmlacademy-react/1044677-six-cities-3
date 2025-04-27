@@ -91,5 +91,31 @@ export const offers: Offer[] = [
     city: 'Paris',
     lat: 48.856613,
     lng: 2.352222
+  },
+  {
+    id: 8,
+    img: 'img/apartment-02.jpg',
+    priceValue: 500,
+    rating: 80,
+    placeCardName: 'Beautiful flat in the city center',
+    placeCardType: 'Flat',
+    isFavorite: false,
+    isPremium: false,
+    city: 'Dusseldorf',
+    lat: 51.225402,
+    lng: 6.776314
+  },
+  {
+    id: 9,
+    img: 'img/apartment-01.jpg',
+    priceValue: 300,
+    rating: 60,
+    placeCardName: 'Hostel room in the downtown',
+    placeCardType: 'Hostel',
+    isFavorite: false,
+    isPremium: false,
+    city: 'Dusseldorf',
+    lat: 51.235402,
+    lng: 6.786314
   }
 ];
