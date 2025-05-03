@@ -1,6 +1,6 @@
-import { Offer } from '../types/offer';
+import { Offers } from '../types/offer';
 
-export const offers: Offer[] = [
+export const offers: Offers = [
   {
     id: 1,
     img: 'img/apartment-01.jpg',
@@ -119,3 +119,7 @@ export const offers: Offer[] = [
     lng: 6.786314
   }
 ];
+
+export const getNearOffers = (offerId: number, allOffers: Offers): Offers => allOffers
+  .filter((offer) => offer.id !== offerId)
+  .slice(0, 3);
