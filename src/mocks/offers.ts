@@ -120,6 +120,13 @@ export const offers: Offers = [
   }
 ];
 
-export const getNearOffers = (offerId: number, allOffers: Offers): Offers => allOffers
-  .filter((offer) => offer.id !== offerId)
-  .slice(0, 3);
+export const getNearOffers = (offerId: number, allOffers: Offers): Offers => {
+  const currentOffer = allOffers.find((offer) => offer.id === offerId);
+  if (!currentOffer) {
+    return [];
+  }
+
+  return allOffers
+    .filter((offer) => offer.id !== offerId && offer.city === currentOffer.city)
+    .slice(0, 3);
+};
