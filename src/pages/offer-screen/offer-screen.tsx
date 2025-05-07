@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { CITIES } from '../../const';
 import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
@@ -17,7 +16,6 @@ type OfferScreenProps = {
 }
 
 function OfferScreen({offers}: OfferScreenProps): JSX.Element {
-  const [activeOfferId, setActiveOfferId] = useState<number | null>(null);
   const {id} = useParams<{ id: string }>();
   const offer = offers.find((item) => item.id === Number(id));
   if (!offer) {
@@ -27,8 +25,6 @@ function OfferScreen({offers}: OfferScreenProps): JSX.Element {
   const nearbyOffers = getNearOffers(offer.id, offers);
   const currentCity = CITIES.find((city) => city.title === offer.city) || CITIES[0];
   const mapOffers = [offer, ...nearbyOffers];
-  const activeMapOffer = activeOfferId ? mapOffers.find((mapOffer) => mapOffer.id === activeOfferId) || offer : offer;
-
   return (
     <div className="page">
       <Helmet>
@@ -156,7 +152,7 @@ function OfferScreen({offers}: OfferScreenProps): JSX.Element {
             <Map
               city={currentCity}
               offers={mapOffers}
-              activeOffer={activeMapOffer}
+              activeOffer={offer}
             />
           </section>
         </section>
@@ -165,8 +161,8 @@ function OfferScreen({offers}: OfferScreenProps): JSX.Element {
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <NearbyOffersList
               offers={nearbyOffers}
-              onMouseEnter={(nearbyOffer) => setActiveOfferId(nearbyOffer.id)}
-              onMouseLeave={() => setActiveOfferId(null)}
+              onMouseEnter={() => {}}
+              onMouseLeave={() => {}}
             />
           </section>
         </div>
