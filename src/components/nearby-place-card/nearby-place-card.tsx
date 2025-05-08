@@ -3,18 +3,14 @@ import { Offer } from '../../types/offer';
 
 type NearbyPlaceCardProps = {
   offer: Offer;
-  onMouseEnter: () => void;
-  onMouseLeave?: () => void;
 }
 
-function NearbyPlaceCard({offer, onMouseEnter, onMouseLeave}: NearbyPlaceCardProps): JSX.Element {
+function NearbyPlaceCard({offer}: NearbyPlaceCardProps): JSX.Element {
   const {id, img, priceValue, rating, placeCardName, placeCardType, isPremium, isFavorite} = offer;
 
   return (
     <article
       className="near-places__card place-card"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
     >
       {isPremium && (
         <div className="place-card__mark">

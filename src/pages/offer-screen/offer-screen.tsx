@@ -159,11 +159,7 @@ function OfferScreen({offers}: OfferScreenProps): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <NearbyOffersList
-              offers={nearbyOffers}
-              onMouseEnter={() => {}}
-              onMouseLeave={() => {}}
-            />
+            <NearbyOffersList offers={nearbyOffers} />
           </section>
         </div>
       </main>
