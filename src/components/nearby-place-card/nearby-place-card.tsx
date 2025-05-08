@@ -1,27 +1,23 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 
-type PlaceCardProps = {
+type NearbyPlaceCardProps = {
   offer: Offer;
-  onMouseEnter: () => void;
-  onMouseLeave?: () => void;
 }
 
-function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Element {
+function NearbyPlaceCard({offer}: NearbyPlaceCardProps): JSX.Element {
   const {id, img, priceValue, rating, placeCardName, placeCardType, isPremium, isFavorite} = offer;
 
   return (
     <article
-      className="cities__card place-card"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      className="near-places__card place-card"
     >
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className="near-places__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${id}`}>
           <img className="place-card__image"
             src={img}
@@ -61,4 +57,4 @@ function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Ele
   );
 }
 
-export default PlaceCard;
+export default NearbyPlaceCard;

@@ -1,6 +1,6 @@
-import {City} from '../types/city';
-import {Map, TileLayer} from 'leaflet';
-import {useEffect, useState, MutableRefObject, useRef} from 'react';
+import { City } from '../types/city';
+import { Map, TileLayer } from 'leaflet';
+import { useEffect, useState, MutableRefObject, useRef } from 'react';
 
 function useMap(
   mapRef: MutableRefObject<HTMLDivElement | null>,
@@ -8,7 +8,6 @@ function useMap(
 ): Map | null {
   const [map, setMap] = useState<Map | null>(null);
   const isInitializedRef = useRef(false);
-
 
   useEffect(() => {
     if (mapRef.current !== null && !isInitializedRef.current) {
