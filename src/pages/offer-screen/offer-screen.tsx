@@ -1,30 +1,32 @@
 import { CITIES } from '../../const';
-import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { reviews } from '../../mocks/reviews';
-import { getNearOffers } from '../../mocks/offers';
+import { useAppSelector } from '../../hooks/store';
 import Header from '../../components/header/header';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import ReviewForm from '../../components/review-form/review-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyOffersList from '../../components/nearby-offers-list/nearby-offers-list';
 
-type OfferScreenProps = {
-  offers: Offer[];
-}
-
-function OfferScreen({offers}: OfferScreenProps): JSX.Element {
+function OfferScreen(): JSX.Element {
   const {id} = useParams<{ id: string }>();
-  const offer = offers.find((item) => item.id === Number(id));
+  const offerId = Number(id);
+
+  const offers = useAppSelector((state) => state.offers);
+  const offer = offers.find((offer) => offer.id === offerId);
+  const nearbyOffers = offers
+    .filter((offer) => offer.id !== offerId && offer.city === offer.city)
+    .slice(0, 3);
+
   if (!offer) {
     return <NotFoundScreen />;
   }
 
-  const nearbyOffers = getNearOffers(offer.id, offers);
   const currentCity = CITIES.find((city) => city.title === offer.city) || CITIES[0];
   const mapOffers = [offer, ...nearbyOffers];
+
   return (
     <div className="page">
       <Helmet>
