@@ -15,22 +15,22 @@ function OfferScreen(): JSX.Element {
   const offerId = Number(id);
 
   const offers = useAppSelector((state) => state.offers);
-  const offer = offers.find((offer) => offer.id === offerId);
+  const currentOffer = offers.find((offer) => offer.id === offerId);
   const nearbyOffers = offers
     .filter((offer) => offer.id !== offerId && offer.city === offer.city)
     .slice(0, 3);
 
-  if (!offer) {
+  if (!currentOffer) {
     return <NotFoundScreen />;
   }
 
-  const currentCity = CITIES.find((city) => city.title === offer.city) || CITIES[0];
-  const mapOffers = [offer, ...nearbyOffers];
+  const currentCity = CITIES.find((city) => city.title === currentOffer.city) || CITIES[0];
+  const mapOffers = [currentOffer, ...nearbyOffers];
 
   return (
     <div className="page">
       <Helmet>
-        <title>6 cities: {offer.placeCardName}</title>
+        <title>6 cities: {currentOffer.placeCardName}</title>
       </Helmet>
       <Header/>
 
@@ -39,7 +39,7 @@ function OfferScreen(): JSX.Element {
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
               <div className="offer__image-wrapper">
-                <img className="offer__image" src={offer.img} alt={offer.placeCardName}/>
+                <img className="offer__image" src={currentOffer.img} alt={currentOffer.placeCardName}/>
               </div>
               <div className="offer__image-wrapper">
                 <img className="offer__image" src="img/apartment-01.jpg" alt="Photo studio"/>
@@ -57,16 +57,16 @@ function OfferScreen(): JSX.Element {
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {offer.isPremium && (
+              {currentOffer.isPremium && (
                 <div className="offer__mark">
                   <span>Premium</span>
                 </div>
               )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  {offer.placeCardName}
+                  {currentOffer.placeCardName}
                 </h1>
-                <button className={`offer__bookmark-button ${offer.isFavorite ? 'offer__bookmark-button--active' : ''} button`} type="button">
+                <button className={`offer__bookmark-button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''} button`} type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -75,18 +75,18 @@ function OfferScreen(): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: `${offer.rating}%`}}></span>
+                  <span style={{width: `${currentOffer.rating}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">{offer.rating / 20}</span>
+                <span className="offer__rating-value rating__value">{currentOffer.rating / 20}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {offer.placeCardType}
+                  {currentOffer.placeCardType}
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;{offer.priceValue}</b>
+                <b className="offer__price-value">&euro;{currentOffer.priceValue}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
@@ -154,7 +154,7 @@ function OfferScreen(): JSX.Element {
             <Map
               city={currentCity}
               offers={mapOffers}
-              activeOffer={offer}
+              activeOffer={currentOffer}
             />
           </section>
         </section>
