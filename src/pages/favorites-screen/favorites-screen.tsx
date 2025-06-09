@@ -1,12 +1,9 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { Helmet } from 'react-helmet-async';
+import { useAppSelector } from '../../hooks/store';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-
-type FavoritesScreenProps = {
-  offers: Offer[];
-}
 
 function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
   return (
@@ -73,7 +70,8 @@ function CityOffers({city, offers}: {city: string; offers: Offer[]}): JSX.Elemen
   );
 }
 
-function FavoritesScreen({offers}: FavoritesScreenProps): JSX.Element {
+function FavoritesScreen(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
   const cities = Array.from(new Set(favoriteOffers.map((offer) => offer.city)));
 

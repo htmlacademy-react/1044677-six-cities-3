@@ -2,19 +2,24 @@ import { useState } from 'react';
 import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
+import { changeCity } from '../../store/action';
 import { CITIES, DEFAULT_CITY } from '../../const';
 import Header from '../../components/header/header';
 import OffersList from '../../components/offers-list/offers-list';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 
-type MainScreenProps = {
-  offers: Offer[];
-}
+function MainScreen(): JSX.Element {
+  const currentCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.offers);
 
-function MainScreen({offers}: MainScreenProps): JSX.Element {
-  const [activeCity, setActiveCity] = useState<string>(DEFAULT_CITY.title);
+  const dispatch = useAppDispatch();
+
+  const currentOffers = offers.filter((offer) => offer.city === currentCity.title);
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
-  const cityOffers = offers.filter((offer) => offer.city === activeCity);
-  const currentCity = CITIES.find((city) => city.title === activeCity) || DEFAULT_CITY;
+
+  const handleCityChange = (selectedCity: typeof DEFAULT_CITY) => {
+    dispatch(changeCity(selectedCity));
+  };
 
   return (
     <div className="page page--gray page--main">
@@ -30,11 +35,11 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
               {CITIES.map((city) => (
                 <li className="locations__item" key={city.title}>
                   <a
-                    className={`locations__item-link tabs__item ${city.title === activeCity ? ' tabs__item--active' : ''}`}
+                    className={`locations__item-link tabs__item ${city.title === currentCity.title ? ' tabs__item--active' : ''}`}
                     href="#"
                     onClick={(evt) => {
                       evt.preventDefault();
-                      setActiveCity(city.title);
+                      handleCityChange(city);
                     }}
                   >
                     <span>{city.title}</span>
@@ -48,7 +53,7 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{cityOffers.length} places to stay in {activeCity}</b>
+              <b className="places__found">{currentOffers.length} places to stay in {currentCity.title}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -65,7 +70,7 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <OffersList
-                offers={cityOffers}
+                offers={currentOffers}
                 onMouseEnter={setActiveOffer}
                 onMouseLeave={() => setActiveOffer(null)}
               />
@@ -74,7 +79,7 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
               <section className="cities__map map">
                 <Map
                   city={currentCity}
-                  offers={cityOffers}
+                  offers={currentOffers}
                   activeOffer={activeOffer}
                 />
               </section>
