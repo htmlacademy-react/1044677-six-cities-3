@@ -4,14 +4,15 @@ import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import Sort from '../../components/sort/sort';
 import { changeCity } from '../../store/action';
-import { CITIES, DEFAULT_CITY } from '../../const';
 import Header from '../../components/header/header';
+import { CITIES, DEFAULT_CITY, SortType } from '../../const';
 import OffersList from '../../components/offers-list/offers-list';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 
 function MainScreen(): JSX.Element {
   const currentCity = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offers);
+  const sortType = useAppSelector((state) => state.sortType);
 
   const dispatch = useAppDispatch();
 
@@ -21,6 +22,21 @@ function MainScreen(): JSX.Element {
   const handleCityChange = (selectedCity: typeof DEFAULT_CITY) => {
     dispatch(changeCity(selectedCity));
   };
+
+  const getSortedOffers = (offersList: Offer[]): Offer[] => {
+    switch (sortType) {
+      case SortType.PriceLowToHigh:
+        return [...offersList].sort((a, b) => a.priceValue - b.priceValue);
+      case SortType.PriceHighToLow:
+        return [...offersList].sort((a, b) => b.priceValue - a.priceValue);
+      case SortType.TopRated:
+        return [...offersList].sort((a, b) => b.rating - a.rating);
+      default:
+        return offersList;
+    }
+  };
+
+  const sortedOffers = getSortedOffers(currentOffers);
 
   return (
     <div className="page page--gray page--main">
@@ -57,7 +73,7 @@ function MainScreen(): JSX.Element {
               <b className="places__found">{currentOffers.length} place{currentOffers.length > 1 ? 's' : ''} to stay in {currentCity.title}</b>
               <Sort/>
               <OffersList
-                offers={currentOffers}
+                offers={sortedOffers}
                 onMouseEnter={setActiveOffer}
                 onMouseLeave={() => setActiveOffer(null)}
               />
