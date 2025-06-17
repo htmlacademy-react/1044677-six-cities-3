@@ -11,12 +11,12 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 
 function MainScreen(): JSX.Element {
   const currentCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offers);
+  const allOffers = useAppSelector((state) => state.allOffers);
   const sortType = useAppSelector((state) => state.sortType);
 
   const dispatch = useAppDispatch();
 
-  const currentOffers = offers.filter((offer) => offer.city === currentCity.title);
+  const currentOffers = allOffers.filter((offer) => offer.city === currentCity.title);
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
 
   const handleCityChange = (selectedCity: typeof DEFAULT_CITY) => {

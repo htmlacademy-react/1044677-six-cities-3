@@ -14,10 +14,10 @@ function OfferScreen(): JSX.Element {
   const {id} = useParams<{ id: string }>();
   const offerId = Number(id);
 
-  const offers = useAppSelector((state) => state.offers);
-  const currentOffer = offers.find((offer) => offer.id === offerId);
-  const nearbyOffers = offers
-    .filter((offer) => offer.id !== offerId && offer.city === offer.city)
+  const allOffers = useAppSelector((state) => state.allOffers);
+  const currentOffer = allOffers.find((offer) => offer.id === offerId);
+  const nearbyOffers = allOffers
+    .filter((offer) => offer.id !== offerId && offer.city === currentOffer?.city)
     .slice(0, 3);
 
   if (!currentOffer) {
