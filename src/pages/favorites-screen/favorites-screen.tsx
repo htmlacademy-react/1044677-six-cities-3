@@ -71,8 +71,8 @@ function CityOffers({city, offers}: {city: string; offers: Offer[]}): JSX.Elemen
 }
 
 function FavoritesScreen(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers);
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
+  const allOffers = useAppSelector((state) => state.allOffers);
+  const favoriteOffers = allOffers.filter((offer) => offer.isFavorite);
   const cities = Array.from(new Set(favoriteOffers.map((offer) => offer.city)));
 
   return (
