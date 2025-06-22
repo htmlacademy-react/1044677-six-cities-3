@@ -70,7 +70,7 @@ function MainScreen(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{currentOffers.length} place{currentOffers.length > 1 ? 's' : ''} to stay in {currentCity.title}</b>
+              <b className="places__found">{currentOffers.length} place{currentOffers.length > 1 || currentOffers.length === 0 ? 's' : ''} to stay in {currentCity.title}</b>
               <Sort/>
               <OffersList
                 offers={sortedOffers}
