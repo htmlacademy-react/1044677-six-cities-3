@@ -1,15 +1,25 @@
+export type Location = {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+};
+
+export type City = {
+  name: string;
+  location: Location;
+};
+
 export type Offer = {
-  id: number;
-  img: string;
-  priceValue: number;
-  rating: number;
-  placeCardName: string;
-  placeCardType: string;
+  id: string;
+  title: string;
+  type: string;
+  price: number;
+  city: City;
+  location: Location;
   isFavorite: boolean;
   isPremium: boolean;
-  city: string;
-  lat: number;
-  lng: number;
+  rating: number;
+  previewImage: string;
 };
 
 export type Offers = Offer[];

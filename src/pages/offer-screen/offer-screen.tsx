@@ -2,7 +2,6 @@ import { CITIES } from '../../const';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import { reviews } from '../../mocks/reviews';
 import { useAppSelector } from '../../hooks/store';
 import Header from '../../components/header/header';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
@@ -12,25 +11,23 @@ import NearbyOffersList from '../../components/nearby-offers-list/nearby-offers-
 
 function OfferScreen(): JSX.Element {
   const {id} = useParams<{ id: string }>();
-  const offerId = Number(id);
-
   const allOffers = useAppSelector((state) => state.allOffers);
-  const currentOffer = allOffers.find((offer) => offer.id === offerId);
+  const currentOffer = allOffers.find((offer) => offer.id === id);
   const nearbyOffers = allOffers
-    .filter((offer) => offer.id !== offerId && offer.city === currentOffer?.city)
+    .filter((offer) => offer.id !== id && offer.city.name === currentOffer?.city.name)
     .slice(0, 3);
 
   if (!currentOffer) {
     return <NotFoundScreen />;
   }
 
-  const currentCity = CITIES.find((city) => city.title === currentOffer.city) || CITIES[0];
+  const currentCity = CITIES.find((city) => city.title === currentOffer.city.name) || CITIES[0];
   const mapOffers = [currentOffer, ...nearbyOffers];
 
   return (
     <div className="page">
       <Helmet>
-        <title>6 cities: {currentOffer.placeCardName}</title>
+        <title>6 cities: {currentOffer.title}</title>
       </Helmet>
       <Header/>
 
@@ -39,7 +36,7 @@ function OfferScreen(): JSX.Element {
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
               <div className="offer__image-wrapper">
-                <img className="offer__image" src={currentOffer.img} alt={currentOffer.placeCardName}/>
+                <img className="offer__image" src={currentOffer.previewImage} alt={currentOffer.title}/>
               </div>
               <div className="offer__image-wrapper">
                 <img className="offer__image" src="img/apartment-01.jpg" alt="Photo studio"/>
@@ -64,7 +61,7 @@ function OfferScreen(): JSX.Element {
               )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  {currentOffer.placeCardName}
+                  {currentOffer.title}
                 </h1>
                 <button className={`offer__bookmark-button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''} button`} type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
@@ -75,18 +72,18 @@ function OfferScreen(): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: `${currentOffer.rating}%`}}></span>
+                  <span style={{width: `${currentOffer.rating * 20}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">{currentOffer.rating / 20}</span>
+                <span className="offer__rating-value rating__value">{currentOffer.rating}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {currentOffer.placeCardType}
+                  {currentOffer.type}
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;{currentOffer.priceValue}</b>
+                <b className="offer__price-value">&euro;{currentOffer.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
@@ -145,7 +142,7 @@ function OfferScreen(): JSX.Element {
                     An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
                   </p>
                 </div>
-                <ReviewsList reviews={reviews} />
+                <ReviewsList reviews={[]} />
                 <ReviewForm />
               </div>
             </div>

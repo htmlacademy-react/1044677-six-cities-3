@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import Sort from '../../components/sort/sort';
 import { changeCity } from '../../store/action';
 import Header from '../../components/header/header';
+import Spinner from '../../components/spinner/spinner';
 import { CITIES, DEFAULT_CITY, SortType } from '../../const';
 import OffersList from '../../components/offers-list/offers-list';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
@@ -13,10 +14,12 @@ function MainScreen(): JSX.Element {
   const currentCity = useAppSelector((state) => state.city);
   const allOffers = useAppSelector((state) => state.allOffers);
   const sortType = useAppSelector((state) => state.sortType);
+  const isLoading = useAppSelector((state) => state.isLoading);
+  const error = useAppSelector((state) => state.error);
 
   const dispatch = useAppDispatch();
 
-  const currentOffers = allOffers.filter((offer) => offer.city === currentCity.title);
+  const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity.title);
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
 
   const handleCityChange = (selectedCity: typeof DEFAULT_CITY) => {
@@ -26,9 +29,9 @@ function MainScreen(): JSX.Element {
   const getSortedOffers = (offersList: Offer[]): Offer[] => {
     switch (sortType) {
       case SortType.PriceLowToHigh:
-        return [...offersList].sort((a, b) => a.priceValue - b.priceValue);
+        return [...offersList].sort((a, b) => a.price - b.price);
       case SortType.PriceHighToLow:
-        return [...offersList].sort((a, b) => b.priceValue - a.priceValue);
+        return [...offersList].sort((a, b) => b.price - a.price);
       case SortType.TopRated:
         return [...offersList].sort((a, b) => b.rating - a.rating);
       default:
@@ -37,6 +40,50 @@ function MainScreen(): JSX.Element {
   };
 
   const sortedOffers = getSortedOffers(currentOffers);
+
+  if (isLoading) {
+    return (
+      <div className="page page--gray page--main">
+        <Helmet>
+          <title>6 cities</title>
+        </Helmet>
+        <Header/>
+        <main className="page__main page__main--index">
+          <div className="container">
+            <div className="cities__places-container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <Spinner />
+              </section>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="page page--gray page--main">
+        <Helmet>
+          <title>6 cities</title>
+        </Helmet>
+        <Header/>
+        <main className="page__main page__main--index">
+          <div className="container">
+            <div className="cities__places-container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <div className="cities__status-wrapper">
+                  <b className="cities__status">Error: {error}</b>
+                </div>
+              </section>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -70,7 +117,7 @@ function MainScreen(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{currentOffers.length} place{currentOffers.length > 1 ? 's' : ''} to stay in {currentCity.title}</b>
+              <b className="places__found">{currentOffers.length} place{currentOffers.length > 1 || currentOffers.length === 0 ? 's' : ''} to stay in {currentCity.title}</b>
               <Sort/>
               <OffersList
                 offers={sortedOffers}

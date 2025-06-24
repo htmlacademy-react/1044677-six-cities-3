@@ -38,8 +38,8 @@ function Map(props: MapProps): JSX.Element {
       markerLayer.current.clearLayers();
       offers.forEach((offer) => {
         leaflet.marker({
-          lat: offer.lat,
-          lng: offer.lng
+          lat: offer.location.latitude,
+          lng: offer.location.longitude
         }, {
           icon: activeOffer !== undefined && offer.id === activeOffer?.id
             ? activeMarkerIcon

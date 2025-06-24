@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { fetchOffers } from '../../store/action';
+import { useAppDispatch } from '../../hooks/store';
 import { HelmetProvider } from 'react-helmet-async';
 import PrivateRoute from '../private-route/private-route';
 import { AppRoute, AuthorizationStatus } from '../../const';
@@ -9,6 +12,12 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 
 function App(): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchOffers());
+  }, [dispatch]);
+
   return (
     <HelmetProvider>
       <BrowserRouter>

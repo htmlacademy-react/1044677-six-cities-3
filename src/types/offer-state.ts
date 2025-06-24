@@ -6,4 +6,6 @@ export interface OfferState {
   city: City;
   allOffers: Offers;
   sortType: SortType;
+  isLoading: boolean;
+  error: string | null;
 }
