@@ -1,4 +1,3 @@
-import { offers } from '../mocks/offers';
 import { createReducer } from '@reduxjs/toolkit';
 import { OfferState } from '../types/offer-state';
 import { DEFAULT_CITY, SortType } from '../const';
@@ -6,7 +5,7 @@ import { changeCity, fillOffers, changeSortType } from './action';
 
 const initialState: OfferState = {
   city: DEFAULT_CITY,
-  allOffers: offers,
+  allOffers: [],
   sortType: SortType.Popular
 };
 

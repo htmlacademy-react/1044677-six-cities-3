@@ -2,7 +2,6 @@ import { CITIES } from '../../const';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import { reviews } from '../../mocks/reviews';
 import { useAppSelector } from '../../hooks/store';
 import Header from '../../components/header/header';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
@@ -145,7 +144,7 @@ function OfferScreen(): JSX.Element {
                     An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
                   </p>
                 </div>
-                <ReviewsList reviews={reviews} />
+                <ReviewsList reviews={[]} />
                 <ReviewForm />
               </div>
             </div>
