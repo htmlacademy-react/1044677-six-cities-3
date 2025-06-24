@@ -16,7 +16,7 @@ function MainScreen(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const currentOffers = allOffers.filter((offer) => offer.city === currentCity.title);
+  const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity.title);
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
 
   const handleCityChange = (selectedCity: typeof DEFAULT_CITY) => {
@@ -26,9 +26,9 @@ function MainScreen(): JSX.Element {
   const getSortedOffers = (offersList: Offer[]): Offer[] => {
     switch (sortType) {
       case SortType.PriceLowToHigh:
-        return [...offersList].sort((a, b) => a.priceValue - b.priceValue);
+        return [...offersList].sort((a, b) => a.price - b.price);
       case SortType.PriceHighToLow:
-        return [...offersList].sort((a, b) => b.priceValue - a.priceValue);
+        return [...offersList].sort((a, b) => b.price - a.price);
       case SortType.TopRated:
         return [...offersList].sort((a, b) => b.rating - a.rating);
       default:

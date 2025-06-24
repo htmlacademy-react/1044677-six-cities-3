@@ -16,7 +16,7 @@ function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
       <div className="favorites__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${offer.id}`}>
           <img className="place-card__image"
-            src={offer.img}
+            src={offer.previewImage}
             width="150"
             height="110"
             alt="Place image"
@@ -26,7 +26,7 @@ function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
       <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{offer.priceValue}</b>
+            <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
@@ -38,14 +38,14 @@ function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${offer.rating}%`}}></span>
+            <span style={{width: `${offer.rating * 20}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${offer.id}`}>{offer.placeCardName}</Link>
+          <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
         </h2>
-        <p className="place-card__type">{offer.placeCardType}</p>
+        <p className="place-card__type">{offer.type}</p>
       </div>
     </article>
   );
@@ -73,7 +73,7 @@ function CityOffers({city, offers}: {city: string; offers: Offer[]}): JSX.Elemen
 function FavoritesScreen(): JSX.Element {
   const allOffers = useAppSelector((state) => state.allOffers);
   const favoriteOffers = allOffers.filter((offer) => offer.isFavorite);
-  const cities = Array.from(new Set(favoriteOffers.map((offer) => offer.city)));
+  const cities = Array.from(new Set(favoriteOffers.map((offer) => offer.city.name)));
 
   return (
     <div className="page">
@@ -91,7 +91,7 @@ function FavoritesScreen(): JSX.Element {
                 <CityOffers
                   key={city}
                   city={city}
-                  offers={favoriteOffers.filter((offer) => offer.city === city)}
+                  offers={favoriteOffers.filter((offer) => offer.city.name === city)}
                 />
               ))}
             </ul>
