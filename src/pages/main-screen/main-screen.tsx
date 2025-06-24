@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import Sort from '../../components/sort/sort';
 import { changeCity } from '../../store/action';
 import Header from '../../components/header/header';
+import Spinner from '../../components/spinner/spinner';
 import { CITIES, DEFAULT_CITY, SortType } from '../../const';
 import OffersList from '../../components/offers-list/offers-list';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
@@ -13,6 +14,8 @@ function MainScreen(): JSX.Element {
   const currentCity = useAppSelector((state) => state.city);
   const allOffers = useAppSelector((state) => state.allOffers);
   const sortType = useAppSelector((state) => state.sortType);
+  const isLoading = useAppSelector((state) => state.isLoading);
+  const error = useAppSelector((state) => state.error);
 
   const dispatch = useAppDispatch();
 
@@ -37,6 +40,50 @@ function MainScreen(): JSX.Element {
   };
 
   const sortedOffers = getSortedOffers(currentOffers);
+
+  if (isLoading) {
+    return (
+      <div className="page page--gray page--main">
+        <Helmet>
+          <title>6 cities</title>
+        </Helmet>
+        <Header/>
+        <main className="page__main page__main--index">
+          <div className="container">
+            <div className="cities__places-container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <Spinner />
+              </section>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="page page--gray page--main">
+        <Helmet>
+          <title>6 cities</title>
+        </Helmet>
+        <Header/>
+        <main className="page__main page__main--index">
+          <div className="container">
+            <div className="cities__places-container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <div className="cities__status-wrapper">
+                  <b className="cities__status">Error: {error}</b>
+                </div>
+              </section>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="page page--gray page--main">
