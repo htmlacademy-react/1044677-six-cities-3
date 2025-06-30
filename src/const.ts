@@ -5,37 +5,37 @@ export const CITIES: City[] = [
     title: 'Paris',
     lat: 48.864716,
     lng: 2.349014,
-    zoom: 10
+    zoom: 13
   },
   {
     title: 'Cologne',
     lat: 50.935173,
     lng: 6.953101,
-    zoom: 10
+    zoom: 13
   },
   {
     title: 'Brussels',
     lat: 50.846557,
     lng: 4.351697,
-    zoom: 10
+    zoom: 13
   },
   {
     title: 'Amsterdam',
     lat: 52.372776,
     lng: 4.892222,
-    zoom: 10
+    zoom: 13
   },
   {
     title: 'Hamburg',
     lat: 53.551086,
     lng: 9.993682,
-    zoom: 10
+    zoom: 13
   },
   {
     title: 'Dusseldorf',
     lat: 51.233334,
     lng: 6.783333,
-    zoom: 10
+    zoom: 13
   }
 ];
 
