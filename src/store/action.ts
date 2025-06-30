@@ -5,6 +5,7 @@ import { AuthorizationStatus, SortType } from '../const';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const changeCity = createAction<City>('city/change');
+export const setError = createAction<string | null>('error/set');
 export const changeSortType = createAction<SortType>('sort/change');
 
 export const fetchOffers = createAsyncThunk<Offers, void, {extra: AxiosInstance}>

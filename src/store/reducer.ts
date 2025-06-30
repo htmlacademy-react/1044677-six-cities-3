@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { OfferState } from '../types/offer-state';
 import { AuthorizationStatus, DEFAULT_CITY, SortType } from '../const';
-import { changeCity, changeSortType, fetchOffers, requireAuthorization } from './action';
+import { changeCity, changeSortType, fetchOffers, requireAuthorization, setError } from './action';
 
 const initialState: OfferState = {
   city: DEFAULT_CITY,
@@ -34,5 +34,8 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
