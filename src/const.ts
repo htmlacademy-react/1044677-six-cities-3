@@ -39,6 +39,8 @@ export const CITIES: City[] = [
   }
 ];
 
+export const TIMEOUT_SHOW_ERROR = 2000;
+
 export const DEFAULT_CITY: City = CITIES[0];
 
 export const RATING_TITLES = [
