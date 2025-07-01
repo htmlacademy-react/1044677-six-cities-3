@@ -3,11 +3,12 @@ import { AxiosInstance } from 'axios';
 import { Offers } from '../types/offer.js';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
-import { requireAuthorization, setError } from './action';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { saveToken, dropToken } from '../services/token';
-import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
+import { requireAuthorization, setError } from './action';
 import { AppDispatch, RootState } from '../types/state.js';
+import { processErrorHandle } from '../services/proces-error-handle';
+import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 
 export const clearErrorAction = createAsyncThunk(
   'error/clearError',
@@ -50,9 +51,15 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 }>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
-    const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
-    saveToken(token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    try {
+      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
+      saveToken(token);
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    } catch (error) {
+      processErrorHandle('Login failed');
+      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      throw error;
+    }
   },
 );
 

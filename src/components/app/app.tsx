@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
+import { AppRoute } from '../../const';
 import { fetchOffers } from '../../store/action';
 import { useAppDispatch } from '../../hooks/store';
 import { HelmetProvider } from 'react-helmet-async';
 import PrivateRoute from '../private-route/private-route';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { checkAuthAction } from '../../store/api-actions';
 import MainScreen from '../../pages/main-screen/main-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
@@ -16,6 +17,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchOffers());
+    dispatch(checkAuthAction());
   }, [dispatch]);
 
   return (
@@ -24,7 +26,7 @@ function App(): JSX.Element {
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<MainScreen />}
+            element={<MainScreen/>}
           />
           <Route
             path={AppRoute.Login}
@@ -33,16 +35,14 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute
-                authorizationStatus={AuthorizationStatus.NoAuth}
-              >
-                <FavoritesScreen />
+              <PrivateRoute>
+                <FavoritesScreen/>
               </PrivateRoute>
             }
           />
           <Route
             path={AppRoute.Offer}
-            element={<OfferScreen />}
+            element={<OfferScreen/>}
           />
           <Route
             path={AppRoute.NotFound}
