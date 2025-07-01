@@ -1,6 +1,5 @@
 import { store } from '../store';
 import { AxiosInstance } from 'axios';
-import { Offers } from '../types/offer.js';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -14,17 +13,6 @@ export const clearErrorAction = createAsyncThunk(
   'error/clearError',
   () => {
     setTimeout(() => store.dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
-  },
-);
-
-export const fetchOfferAction = createAsyncThunk<void, undefined, {
-  dispatch: AppDispatch;
-  state: RootState;
-  extra: AxiosInstance;
-}>(
-  'data/fetchOffers',
-  async (_arg, {extra: api}) => {
-    await api.get<Offers>(APIRoute.Offers);
   },
 );
 

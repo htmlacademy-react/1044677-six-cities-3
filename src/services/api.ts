@@ -1,5 +1,8 @@
+import { store } from '../store';
 import { getToken } from './token';
+import { AuthorizationStatus } from '../const';
 import { StatusCodes } from 'http-status-codes';
+import { requireAuthorization } from '../store/action';
 import { processErrorHandle } from './proces-error-handle';
 import axios, { AxiosInstance, AxiosError, AxiosResponse } from 'axios';
 
@@ -40,6 +43,10 @@ export const createAPI = (): AxiosInstance => {
         const detailMessage = (error.response.data);
 
         processErrorHandle(detailMessage.message);
+      }
+
+      if (error.response?.status === StatusCodes.UNAUTHORIZED) {
+        store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
       }
 
       throw error;
