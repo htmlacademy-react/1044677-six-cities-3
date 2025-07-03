@@ -42,11 +42,11 @@ export const createAPI = (): AxiosInstance => {
       if (error.response && shouldDisplayError(error.response)) {
         const detailMessage = (error.response.data);
 
-        processErrorHandle(detailMessage.message);
-      }
-
-      if (error.response?.status === StatusCodes.UNAUTHORIZED) {
-        store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+        if (error.response.status === 401) {
+          store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+        } else {
+          processErrorHandle(detailMessage.message);
+        }
       }
 
       throw error;
