@@ -1,14 +1,15 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { OfferState } from '../types/offer-state';
-import { DEFAULT_CITY, SortType } from '../const';
-import { changeCity, changeSortType, fetchOffers } from './action';
+import { AuthorizationStatus, DEFAULT_CITY, SortType } from '../const';
+import { changeCity, changeSortType, fetchOffers, requireAuthorization, setError } from './action';
 
 const initialState: OfferState = {
   city: DEFAULT_CITY,
   allOffers: [],
   sortType: SortType.Popular,
   isLoading: false,
-  error: null
+  error: null,
+  authorizationStatus: AuthorizationStatus.Unknown,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -30,5 +31,11 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(fetchOffers.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error?.message || 'Failed to load offers';
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
