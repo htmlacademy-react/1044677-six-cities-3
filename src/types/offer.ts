@@ -19,7 +19,30 @@ export type Offer = {
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: {
+    name: string;
+    avatarUrl: string;
+    isPro: boolean;
+  };
+  images: string[];
+  maxAdults: number;
   previewImage: string;
 };
 
 export type Offers = Offer[];
+
+export type PlaceCard = {
+  id: string;
+  title: string;
+  type: string;
+  price: number;
+  previewImage: string;
+  city: City;
+  location: Location;
+  isFavorite: boolean;
+  isPremium: boolean;
+  rating: number;
+};
