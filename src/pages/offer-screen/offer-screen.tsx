@@ -2,10 +2,11 @@ import { CITIES } from '../../const';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/store';
 import Header from '../../components/header/header';
+import { toggleFavorite } from '../../store/action';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import ReviewForm from '../../components/review-form/review-form';
+import { useAppSelector, useAppDispatch } from '../../hooks/store';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyOffersList from '../../components/nearby-offers-list/nearby-offers-list';
 
@@ -16,6 +17,13 @@ function OfferScreen(): JSX.Element {
   const nearbyOffers = allOffers
     .filter((offer) => offer.id !== id && offer.city.name === currentOffer?.city.name)
     .slice(0, 3);
+
+  const dispatch = useAppDispatch();
+  const handleToggleFavorite = () => {
+    if (id) {
+      dispatch(toggleFavorite(id));
+    }
+  };
 
   if (!currentOffer) {
     return <NotFoundScreen />;
@@ -63,7 +71,11 @@ function OfferScreen(): JSX.Element {
                 <h1 className="offer__name">
                   {currentOffer.title}
                 </h1>
-                <button className={`offer__bookmark-button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''} button`} type="button">
+                <button
+                  className={`offer__bookmark-button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''} button`}
+                  type="button"
+                  onClick={handleToggleFavorite}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>

@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { OfferState } from '../types/offer-state';
 import { AuthorizationStatus, DEFAULT_CITY, SortType } from '../const';
-import { changeCity, changeSortType, fetchOffers, requireAuthorization, setError } from './action';
+import { changeCity, changeSortType, fetchOffers, requireAuthorization, setError, toggleFavorite } from './action';
 
 const initialState: OfferState = {
   city: DEFAULT_CITY,
@@ -37,5 +37,12 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(toggleFavorite, (state, action) => {
+      const offerId = action.payload;
+      const currentOffer = state.allOffers.find((offer) => offer.id === offerId);
+      if (currentOffer) {
+        currentOffer.isFavorite = !currentOffer.isFavorite;
+      }
     });
 });

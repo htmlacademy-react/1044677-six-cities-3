@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+import { useAppDispatch } from '../../hooks/store';
+import { toggleFavorite } from '../../store/action';
 
 type PlaceCardProps = {
   offer: Offer;
@@ -8,7 +10,12 @@ type PlaceCardProps = {
 }
 
 function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const {id, previewImage, price, rating, title, type, isPremium, isFavorite} = offer;
+
+  const handleToggleFavorite = () => {
+    dispatch(toggleFavorite(id));
+  };
 
   return (
     <article
@@ -37,7 +44,11 @@ function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Ele
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button ${isFavorite ? 'place-card__bookmark-button--active' : ''} button`} type="button">
+          <button
+            className={`place-card__bookmark-button ${isFavorite ? 'place-card__bookmark-button--active' : ''} button`}
+            type="button"
+            onClick={handleToggleFavorite}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

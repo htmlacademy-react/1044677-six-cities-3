@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { Helmet } from 'react-helmet-async';
-import { useAppSelector } from '../../hooks/store';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import { toggleFavorite } from '../../store/action';
+import { useAppSelector, useAppDispatch } from '../../hooks/store';
 
 function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const handleToggleFavorite = () => {
+    dispatch(toggleFavorite(offer.id));
+  };
+
   return (
     <article className="favorites__card place-card">
       {offer.isPremium && (
@@ -29,7 +36,11 @@ function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+          <button
+            className="place-card__bookmark-button place-card__bookmark-button--active button"
+            type="button"
+            onClick={handleToggleFavorite}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -76,27 +87,38 @@ function FavoritesScreen(): JSX.Element {
   const cities = Array.from(new Set(favoriteOffers.map((offer) => offer.city.name)));
 
   return (
-    <div className="page">
+    <div className={`page ${favoriteOffers.length === 0 ? 'page--favorites-empty' : ''}`}>
       <Helmet>
         <title>6 cities: favorites</title>
       </Helmet>
       <Header/>
-
-      <main className="page__main page__main--favorites">
-        <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <ul className="favorites__list">
-              {cities.map((city) => (
-                <CityOffers
-                  key={city}
-                  city={city}
-                  offers={favoriteOffers.filter((offer) => offer.city.name === city)}
-                />
-              ))}
-            </ul>
-          </section>
-        </div>
+      <main className={`page__main page__main--favorites ${favoriteOffers.length === 0 ? 'page__main--favorites-empty' : ''}`}>
+        {favoriteOffers.length === 0 ? (
+          <div className="page__favorites-container container">
+            <section className="favorites favorites--empty">
+              <h1 className="visually-hidden">Favorites (empty)</h1>
+              <div className="favorites__status-wrapper">
+                <b className="favorites__status">Nothing yet saved.</b>
+                <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
+              </div>
+            </section>
+          </div>
+        ) : (
+          <div className="page__favorites-container container">
+            <section className="favorites">
+              <h1 className="favorites__title">Saved listing</h1>
+              <ul className="favorites__list">
+                {cities.map((city) => (
+                  <CityOffers
+                    key={city}
+                    city={city}
+                    offers={favoriteOffers.filter((offer) => offer.city.name === city)}
+                  />
+                ))}
+              </ul>
+            </section>
+          </div>
+        )}
       </main>
       <Footer/>
     </div>

@@ -7,6 +7,7 @@ import { AuthorizationStatus, SortType, APIRoute } from '../const';
 export const changeCity = createAction<City>('city/change');
 export const setError = createAction<string | null>('error/set');
 export const changeSortType = createAction<SortType>('sort/change');
+export const toggleFavorite = createAction<string>('offer/toggleFavorite');
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
 export const fetchOffers = createAsyncThunk<Offers, void, {extra: AxiosInstance}>
