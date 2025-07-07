@@ -1,30 +1,30 @@
 import { useEffect } from 'react';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
-import { CITIES, AuthorizationStatus } from '../../const';
+import { useNavigate, useParams } from 'react-router-dom';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import ReviewForm from '../../components/review-form/review-form';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { toggleFavorite, fetchComments } from '../../store/action';
+import { CITIES, AuthorizationStatus, AppRoute } from '../../const';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyOffersList from '../../components/nearby-offers-list/nearby-offers-list';
+import { toggleFavorite, fetchComments, fetchOfferById, fetchNearbyOffers } from '../../store/action';
 
 function OfferScreen(): JSX.Element {
   const {id} = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const allOffers = useAppSelector((state) => state.allOffers);
+  const currentOffer = useAppSelector((state) => state.currentOffer);
+  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
   const comments = useAppSelector((state) => state.comments);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
-  const currentOffer = allOffers.find((offer) => offer.id === id);
-  const nearbyOffers = allOffers
-    .filter((offer) => offer.id !== id && offer.city.name === currentOffer?.city.name)
-    .slice(0, 3);
 
   useEffect(() => {
     if (id) {
+      dispatch(fetchOfferById(id));
+      dispatch(fetchNearbyOffers(id));
       dispatch(fetchComments(id));
     }
   }, [dispatch, id]);
@@ -40,7 +40,6 @@ function OfferScreen(): JSX.Element {
   }
 
   const currentCity = CITIES.find((city) => city.title === currentOffer.city.name) || CITIES[0];
-  const mapOffers = [currentOffer, ...nearbyOffers];
 
   return (
     <div className="page">
@@ -54,21 +53,11 @@ function OfferScreen(): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src={currentOffer.previewImage} alt={currentOffer.title}/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/apartment-01.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/apartment-02.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/apartment-03.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/studio-01.jpg" alt="Photo studio"/>
-              </div>
+              {currentOffer.images.map((image) => (
+                <div className="offer__image-wrapper" key={image}>
+                  <img className="offer__image" src={image} alt={currentOffer.title} />
+                </div>
+              ))}
             </div>
           </div>
           <div className="offer__container container">
@@ -85,7 +74,7 @@ function OfferScreen(): JSX.Element {
                 <button
                   className={`offer__bookmark-button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''} button`}
                   type="button"
-                  onClick={handleToggleFavorite}
+                  onClick={() => authorizationStatus === AuthorizationStatus.Auth ? handleToggleFavorite() : navigate(AppRoute.Login)}
                 >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
@@ -104,6 +93,12 @@ function OfferScreen(): JSX.Element {
                 <li className="offer__feature offer__feature--entire">
                   {currentOffer.type}
                 </li>
+                <li className="offer__feature offer__feature--bedrooms">
+                  {currentOffer.bedrooms} Bedroom{currentOffer.bedrooms > 1 ? 's' : ''}
+                </li>
+                <li className="offer__feature offer__feature--adults">
+                  Max {currentOffer.maxAdults} adult{currentOffer.maxAdults > 1 ? 's' : ''}
+                </li>
               </ul>
               <div className="offer__price">
                 <b className="offer__price-value">&euro;{currentOffer.price}</b>
@@ -112,57 +107,29 @@ function OfferScreen(): JSX.Element {
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  <li className="offer__inside-item">
-                    Wi-Fi
-                  </li>
-                  <li className="offer__inside-item">
-                    Washing machine
-                  </li>
-                  <li className="offer__inside-item">
-                    Towels
-                  </li>
-                  <li className="offer__inside-item">
-                    Heating
-                  </li>
-                  <li className="offer__inside-item">
-                    Coffee machine
-                  </li>
-                  <li className="offer__inside-item">
-                    Baby seat
-                  </li>
-                  <li className="offer__inside-item">
-                    Kitchen
-                  </li>
-                  <li className="offer__inside-item">
-                    Dishwasher
-                  </li>
-                  <li className="offer__inside-item">
-                    Cabel TV
-                  </li>
-                  <li className="offer__inside-item">
-                    Fridge
-                  </li>
+                  {currentOffer.goods.map((good) => (
+                    <li className="offer__inside-item" key={good}>
+                      {good}
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar"/>
+                    <img className="offer__avatar user__avatar" src={currentOffer.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
                   </div>
                   <span className="offer__user-name">
-                    Angelina
+                    {currentOffer.host.name}
                   </span>
                   <span className="offer__user-status">
-                    Pro
+                    {currentOffer.host.isPro ? 'Pro' : ''}
                   </span>
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                  </p>
-                  <p className="offer__text">
-                    An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+                    {currentOffer.description}
                   </p>
                 </div>
                 <ReviewsList reviews={comments} />
@@ -175,7 +142,7 @@ function OfferScreen(): JSX.Element {
           <section className="offer__map map">
             <Map
               city={currentCity}
-              offers={mapOffers}
+              offers={nearbyOffers.slice(0, 3)}
               activeOffer={currentOffer}
             />
           </section>
@@ -183,7 +150,7 @@ function OfferScreen(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <NearbyOffersList offers={nearbyOffers} />
+            <NearbyOffersList offers={nearbyOffers.slice(0, 3)} />
           </section>
         </div>
       </main>
