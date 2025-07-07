@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { OfferState } from '../types/offer-state';
 import { AuthorizationStatus, DEFAULT_CITY, SortType } from '../const';
-import { changeCity, changeSortType, fetchOffers, requireAuthorization, setError, toggleFavorite, fetchComments, fetchOfferById, fetchNearbyOffers } from './action';
+import { changeCity, changeSortType, fetchOffers, requireAuthorization, setError, toggleFavorite, fetchComments, fetchOfferById, fetchNearbyOffers, leaveComment } from './action';
 
 const initialState: OfferState = {
   city: DEFAULT_CITY,
@@ -93,5 +93,17 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(fetchComments.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error?.message || 'Failed to load comments';
+    })
+    .addCase(leaveComment.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(leaveComment.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.comments.unshift(action.payload);
+    })
+    .addCase(leaveComment.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error?.message || 'Failed to leave a comment';
     });
 });

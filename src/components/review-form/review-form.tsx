@@ -1,8 +1,15 @@
 import { RATING_TITLES } from '../../const';
+import { useParams } from 'react-router-dom';
+import { leaveComment } from '../../store/action';
+import { useAppDispatch } from '../../hooks/store';
 import { useState, ChangeEvent, FormEvent, Fragment } from 'react';
 
 function ReviewForm(): JSX.Element {
+  const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({rating: 0, review: ''});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [commentError, setCommentError] = useState<string | null>(null);
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -20,7 +27,33 @@ function ReviewForm(): JSX.Element {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+
+    if (!id || formData.rating === 0 || formData.review.length < 50) {
+      return;
+    }
+
+    setCommentError('');
+    setIsSubmitting(true);
+
+    dispatch(leaveComment({
+      offerId: id,
+      comment: formData.review,
+      rating: formData.rating
+    }))
+      .unwrap()
+      .then(() => {
+        setFormData({rating: 0, review: ''});
+      })
+      .catch(() => {
+        setCommentError('Failed to submit comment. Please try again.');
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
+
+  const isFormValid = formData.rating > 0 && formData.review.length >= 50 && formData.review.length <= 300;
+  const isDisabled = !isFormValid || isSubmitting;
 
   return (
     <form className="reviews__form form" onSubmit={handleSubmit}>
@@ -36,6 +69,7 @@ function ReviewForm(): JSX.Element {
               type="radio"
               checked={formData.rating === value}
               onChange={handleRatingChange}
+              disabled={isSubmitting}
             />
             <label
               htmlFor={`${value}-stars`}
@@ -49,6 +83,11 @@ function ReviewForm(): JSX.Element {
           </Fragment>
         ))}
       </div>
+      {commentError && (
+        <div className="reviews__error">
+          {commentError}
+        </div>
+      )}
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
@@ -56,6 +95,7 @@ function ReviewForm(): JSX.Element {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={formData.review}
         onChange={handleReviewChange}
+        disabled={isSubmitting}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
@@ -64,9 +104,9 @@ function ReviewForm(): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={formData.rating === 0 || formData.review.length < 50 || formData.review.length > 300}
+          disabled={isDisabled}
         >
-          Submit
+          {isSubmitting ? 'Submitting...' : 'Submit'}
         </button>
       </div>
     </form>

@@ -1,7 +1,7 @@
 import { City } from '../types/city';
 import { AxiosInstance } from 'axios';
 import { Offers, Offer } from '../types/offer';
-import { Reviews } from '../types/review';
+import { Reviews, Review } from '../types/review';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { AuthorizationStatus, SortType, APIRoute } from '../const';
 
@@ -32,5 +32,11 @@ export const fetchNearbyOffers = createAsyncThunk<Offers, string, {extra: AxiosI
 export const fetchComments = createAsyncThunk<Reviews, string, {extra: AxiosInstance}>
 ('comments/fetchComments', async (offerId, { extra: api }) => {
   const response = await api.get<Reviews>(`${APIRoute.Comments}/${offerId}`);
+  return response.data;
+});
+
+export const leaveComment = createAsyncThunk<Review, {offerId: string; comment: string; rating: number}, {extra: AxiosInstance}>
+('comments/leaveComment', async ({offerId, comment, rating}, { extra: api }) => {
+  const response = await api.post<Review>(`${APIRoute.Comments}/${offerId}`, {comment, rating});
   return response.data;
 });
