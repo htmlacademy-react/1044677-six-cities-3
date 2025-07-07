@@ -1,12 +1,22 @@
-import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+import { toggleFavorite } from '../../store/action';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthorizationStatus, AppRoute } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 
 type NearbyPlaceCardProps = {
   offer: Offer;
 }
 
 function NearbyPlaceCard({offer}: NearbyPlaceCardProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const {id, previewImage, price, rating, title, type, isPremium, isFavorite} = offer;
+
+  const handleToggleFavorite = () => {
+    dispatch(toggleFavorite(id));
+  };
 
   return (
     <article
@@ -33,7 +43,11 @@ function NearbyPlaceCard({offer}: NearbyPlaceCardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button ${isFavorite ? 'place-card__bookmark-button--active' : ''} button`} type="button">
+          <button
+            className={`place-card__bookmark-button ${isFavorite ? 'place-card__bookmark-button--active' : ''} button`}
+            type="button"
+            onClick={() => authorizationStatus === AuthorizationStatus.Auth ? handleToggleFavorite() : navigate(AppRoute.Login)}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
