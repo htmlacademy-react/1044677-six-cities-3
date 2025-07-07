@@ -67,9 +67,19 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(toggleFavorite, (state, action) => {
       const offerId = action.payload;
-      const currentOffer = state.allOffers.find((offer) => offer.id === offerId);
-      if (currentOffer) {
-        currentOffer.isFavorite = !currentOffer.isFavorite;
+
+      const offerInAllOffers = state.allOffers.find((offer) => offer.id === offerId);
+      if (offerInAllOffers) {
+        offerInAllOffers.isFavorite = !offerInAllOffers.isFavorite;
+      }
+
+      if (state.currentOffer && state.currentOffer.id === offerId) {
+        state.currentOffer.isFavorite = !state.currentOffer.isFavorite;
+      }
+
+      const nearbyOffer = state.nearbyOffers.find((offer) => offer.id === offerId);
+      if (nearbyOffer) {
+        nearbyOffer.isFavorite = !nearbyOffer.isFavorite;
       }
     })
     .addCase(fetchComments.pending, (state) => {
