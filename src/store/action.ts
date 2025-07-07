@@ -1,6 +1,6 @@
 import { City } from '../types/city';
 import { AxiosInstance } from 'axios';
-import { Offers } from '../types/offer';
+import { Offers, Offer } from '../types/offer';
 import { Reviews } from '../types/review';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { AuthorizationStatus, SortType, APIRoute } from '../const';
@@ -14,6 +14,18 @@ export const requireAuthorization = createAction<AuthorizationStatus>('user/requ
 export const fetchOffers = createAsyncThunk<Offers, void, {extra: AxiosInstance}>
 ('offers/fetchOffers', async (_arg, { extra: api }) => {
   const response = await api.get<Offers>(APIRoute.Offers);
+  return response.data;
+});
+
+export const fetchOfferById = createAsyncThunk<Offer, string, {extra: AxiosInstance}>
+('offers/fetchOfferById', async (offerId, { extra: api }) => {
+  const response = await api.get<Offer>(`${APIRoute.Offers}/${offerId}`);
+  return response.data;
+});
+
+export const fetchNearbyOffers = createAsyncThunk<Offers, string, {extra: AxiosInstance}>
+('offers/fetchNearbyOffers', async (offerId, { extra: api }) => {
+  const response = await api.get<Offers>(`${APIRoute.Offers}/${offerId}${APIRoute.Nearby}`);
   return response.data;
 });
 
