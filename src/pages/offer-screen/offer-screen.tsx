@@ -1,24 +1,34 @@
-import { CITIES } from '../../const';
+import { useEffect } from 'react';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
-import { toggleFavorite } from '../../store/action';
+import { CITIES, AuthorizationStatus } from '../../const';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import ReviewForm from '../../components/review-form/review-form';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
+import { toggleFavorite, fetchComments } from '../../store/action';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyOffersList from '../../components/nearby-offers-list/nearby-offers-list';
 
 function OfferScreen(): JSX.Element {
   const {id} = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
   const allOffers = useAppSelector((state) => state.allOffers);
+  const comments = useAppSelector((state) => state.comments);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
   const currentOffer = allOffers.find((offer) => offer.id === id);
   const nearbyOffers = allOffers
     .filter((offer) => offer.id !== id && offer.city.name === currentOffer?.city.name)
     .slice(0, 3);
 
-  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchComments(id));
+    }
+  }, [dispatch, id]);
+
   const handleToggleFavorite = () => {
     if (id) {
       dispatch(toggleFavorite(id));
@@ -37,6 +47,7 @@ function OfferScreen(): JSX.Element {
       <Helmet>
         <title>6 cities: {currentOffer.title}</title>
       </Helmet>
+
       <Header/>
 
       <main className="page__main page__main--offer">
@@ -154,8 +165,10 @@ function OfferScreen(): JSX.Element {
                     An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
                   </p>
                 </div>
-                <ReviewsList reviews={[]} />
-                <ReviewForm />
+                <ReviewsList reviews={comments} />
+                {isAuthorized ? (
+                  <ReviewForm />
+                ) : ''}
               </div>
             </div>
           </div>

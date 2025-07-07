@@ -9,7 +9,6 @@ function Header(): JSX.Element {
   const favoritesCount = useAppSelector((state) => state.allOffers.filter((offer) => offer.isFavorite).length);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
-
   const handleLogout = () => {
     dispatch(logoutAction());
   };
@@ -42,13 +41,13 @@ function Header(): JSX.Element {
                     </Link>
                   </li>
                   <li className="header__nav-item">
-                    <a
+                    <Link
                       className="header__nav-link"
-                      href="#"
+                      to="#"
                       onClick={handleLogout}
                     >
                       <span className="header__signout">Sign out</span>
-                    </a>
+                    </Link>
                   </li>
                 </>
               ) : (
