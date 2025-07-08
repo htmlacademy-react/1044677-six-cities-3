@@ -36,16 +36,25 @@ function Map(props: MapProps): JSX.Element {
     if (map) {
       markerLayer.current.addTo(map);
       markerLayer.current.clearLayers();
-      offers.forEach((offer) => {
+
+      if (activeOffer) {
         leaflet.marker({
-          lat: offer.location.latitude,
-          lng: offer.location.longitude
+          lat: activeOffer.location.latitude,
+          lng: activeOffer.location.longitude
         }, {
-          icon: activeOffer !== undefined && offer.id === activeOffer?.id
-            ? activeMarkerIcon
-            : defaultMarkerIcon
-        })
-          .addTo(markerLayer.current);
+          icon: activeMarkerIcon
+        }).addTo(markerLayer.current);
+      }
+
+      offers.forEach((offer) => {
+        if (!activeOffer || offer.id !== activeOffer.id) {
+          leaflet.marker({
+            lat: offer.location.latitude,
+            lng: offer.location.longitude
+          }, {
+            icon: defaultMarkerIcon
+          }).addTo(markerLayer.current);
+        }
       });
     }
   }, [map, offers, activeOffer]);
