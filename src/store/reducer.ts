@@ -41,7 +41,11 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchOfferById.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.currentOffer = action.payload;
+      const offerInAllOffers = state.allOffers.find((offer) => offer.id === action.payload.id);
+      state.currentOffer = {
+        ...action.payload,
+        isFavorite: offerInAllOffers ? offerInAllOffers.isFavorite : action.payload.isFavorite
+      };
     })
     .addCase(fetchOfferById.rejected, (state, action) => {
       state.isLoading = false;
@@ -53,7 +57,13 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchNearbyOffers.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.nearbyOffers = action.payload;
+      state.nearbyOffers = action.payload.map((offer) => {
+        const offerInAllOffers = state.allOffers.find((allOffer) => allOffer.id === offer.id);
+        return {
+          ...offer,
+          isFavorite: offerInAllOffers ? offerInAllOffers.isFavorite : offer.isFavorite
+        };
+      });
     })
     .addCase(fetchNearbyOffers.rejected, (state, action) => {
       state.isLoading = false;
