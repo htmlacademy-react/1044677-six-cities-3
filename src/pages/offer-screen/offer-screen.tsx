@@ -158,7 +158,7 @@ function OfferScreen(): JSX.Element {
                     {currentOffer?.description}
                   </p>
                 </div>
-                <ReviewsList reviews={commentsToShow} />
+                <ReviewsList reviews={commentsToShow} totalCount={comments.length} />
                 {isAuthorized ? (
                   <ReviewForm />
                 ) : ''}
