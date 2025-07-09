@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
+import Spinner from '../../components/spinner/spinner';
 import { useNavigate, useParams } from 'react-router-dom';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import ReviewForm from '../../components/review-form/review-form';
@@ -22,6 +23,8 @@ function OfferScreen(): JSX.Element {
   const commentsToShow = comments.slice(0, MAX_COMMENTS);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
+  const isLoading = useAppSelector((state) => state.isLoading);
+  const currentCity = CITIES.find((city) => city.title === currentOffer?.city.name) || CITIES[0];
 
   useEffect(() => {
     if (id) {
@@ -46,16 +49,28 @@ function OfferScreen(): JSX.Element {
     }
   };
 
-  if (!currentOffer) {
+  if (isLoading) {
+    return (
+      <div className="page">
+        <Header />
+        <main className="page__main page__main--offer">
+          <div className="container">
+            <Spinner />
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (!currentOffer && !isLoading) {
     return <NotFoundScreen />;
   }
 
-  const currentCity = CITIES.find((city) => city.title === currentOffer.city.name) || CITIES[0];
 
   return (
     <div className="page">
       <Helmet>
-        <title>6 cities: {currentOffer.title}</title>
+        <title>6 cities: {currentOffer?.title}</title>
       </Helmet>
 
       <Header/>
@@ -64,26 +79,26 @@ function OfferScreen(): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOffer.images.map((image) => (
+              {currentOffer?.images.map((image) => (
                 <div className="offer__image-wrapper" key={image}>
-                  <img className="offer__image" src={image} alt={currentOffer.title} />
+                  <img className="offer__image" src={image} alt={currentOffer?.title} />
                 </div>
               ))}
             </div>
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {currentOffer.isPremium && (
+              {currentOffer?.isPremium && (
                 <div className="offer__mark">
                   <span>Premium</span>
                 </div>
               )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  {currentOffer.title}
+                  {currentOffer?.title}
                 </h1>
                 <button
-                  className={`offer__bookmark-button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''} button`}
+                  className={`offer__bookmark-button ${currentOffer?.isFavorite ? 'offer__bookmark-button--active' : ''} button`}
                   type="button"
                   onClick={() => authorizationStatus === AuthorizationStatus.Auth ? handleToggleFavorite() : navigate(AppRoute.Login)}
                 >
@@ -95,30 +110,30 @@ function OfferScreen(): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: `${currentOffer.rating * 20}%`}}></span>
+                  <span style={{width: `${currentOffer?.rating ? currentOffer.rating * 20 : 0}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">{currentOffer.rating}</span>
+                <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {currentOffer.type}
+                  {currentOffer?.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {currentOffer.bedrooms} Bedroom{currentOffer.bedrooms > 1 ? 's' : ''}
+                  {currentOffer?.bedrooms} Bedroom{currentOffer?.bedrooms && currentOffer.bedrooms > 1 ? 's' : ''}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {currentOffer.maxAdults} adult{currentOffer.maxAdults > 1 ? 's' : ''}
+                  Max {currentOffer?.maxAdults} adult{currentOffer?.maxAdults && currentOffer.maxAdults > 1 ? 's' : ''}
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;{currentOffer.price}</b>
+                <b className="offer__price-value">&euro;{currentOffer?.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {currentOffer.goods.map((good) => (
+                  {currentOffer?.goods.map((good) => (
                     <li className="offer__inside-item" key={good}>
                       {good}
                     </li>
@@ -129,18 +144,18 @@ function OfferScreen(): JSX.Element {
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="offer__avatar user__avatar" src={currentOffer.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
+                    <img className="offer__avatar user__avatar" src={currentOffer?.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
                   </div>
                   <span className="offer__user-name">
-                    {currentOffer.host.name}
+                    {currentOffer?.host.name}
                   </span>
                   <span className="offer__user-status">
-                    {currentOffer.host.isPro ? 'Pro' : ''}
+                    {currentOffer?.host.isPro ? 'Pro' : ''}
                   </span>
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    {currentOffer.description}
+                    {currentOffer?.description}
                   </p>
                 </div>
                 <ReviewsList reviews={commentsToShow} />
