@@ -6,9 +6,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import ReviewForm from '../../components/review-form/review-form';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { CITIES, AuthorizationStatus, AppRoute } from '../../const';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyOffersList from '../../components/nearby-offers-list/nearby-offers-list';
+import { CITIES, AuthorizationStatus, AppRoute, MAX_NEARBY_OFFERS, MAX_COMMENTS } from '../../const';
 import { toggleFavorite, fetchComments, fetchOfferById, fetchNearbyOffers } from '../../store/action';
 
 function OfferScreen(): JSX.Element {
@@ -17,7 +17,9 @@ function OfferScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const currentOffer = useAppSelector((state) => state.currentOffer);
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
+  const nearbyOffersToShow = nearbyOffers.slice(0, MAX_NEARBY_OFFERS);
   const comments = useAppSelector((state) => state.comments);
+  const commentsToShow = comments.slice(0, MAX_COMMENTS);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
@@ -141,7 +143,7 @@ function OfferScreen(): JSX.Element {
                     {currentOffer.description}
                   </p>
                 </div>
-                <ReviewsList reviews={comments} />
+                <ReviewsList reviews={commentsToShow} />
                 {isAuthorized ? (
                   <ReviewForm />
                 ) : ''}
@@ -151,7 +153,7 @@ function OfferScreen(): JSX.Element {
           <section className="offer__map map">
             <Map
               city={currentCity}
-              offers={nearbyOffers.slice(0, 3)}
+              offers={nearbyOffersToShow}
               activeOffer={currentOffer}
             />
           </section>
@@ -159,7 +161,7 @@ function OfferScreen(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <NearbyOffersList offers={nearbyOffers.slice(0, 3)} />
+            <NearbyOffersList offers={nearbyOffersToShow} />
           </section>
         </div>
       </main>

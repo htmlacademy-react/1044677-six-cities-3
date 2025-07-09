@@ -11,14 +11,12 @@ import OffersList from '../../components/offers-list/offers-list';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 
 function MainScreen(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const error = useAppSelector((state) => state.error);
   const currentCity = useAppSelector((state) => state.city);
-  const allOffers = useAppSelector((state) => state.allOffers);
   const sortType = useAppSelector((state) => state.sortType);
   const isLoading = useAppSelector((state) => state.isLoading);
-  const error = useAppSelector((state) => state.error);
-
-  const dispatch = useAppDispatch();
-
+  const allOffers = useAppSelector((state) => state.allOffers);
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity.title);
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
 

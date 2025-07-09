@@ -1,5 +1,13 @@
 import { City } from './types/city';
 
+export const MIN_RATING = 1;
+export const MAX_RATING = 5;
+export const MAX_COMMENTS = 10;
+export const MAX_NEARBY_OFFERS = 3;
+export const MIN_COMMENT_LENGTH = 50;
+export const MAX_COMMENT_LENGTH = 300;
+
+
 export const CITIES: City[] = [
   {
     title: 'Paris',
