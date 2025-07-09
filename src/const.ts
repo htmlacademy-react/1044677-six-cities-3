@@ -6,7 +6,7 @@ export const MAX_COMMENTS = 10;
 export const MAX_NEARBY_OFFERS = 3;
 export const MIN_COMMENT_LENGTH = 50;
 export const MAX_COMMENT_LENGTH = 300;
-
+export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const CITIES: City[] = [
   {
@@ -47,8 +47,6 @@ export const CITIES: City[] = [
   }
 ];
 
-export const TIMEOUT_SHOW_ERROR = 2000;
-
 export const DEFAULT_CITY: City = CITIES[0];
 
 export const RATING_TITLES = [
@@ -86,6 +84,12 @@ export enum APIRoute {
   Logout = '/logout',
   Comments = '/comments',
   Nearby = '/nearby',
+}
+
+export enum NameSpace {
+  Data = 'DATA',
+  User = 'USER',
+  App = 'APP',
 }
 
 export const URL_MARKER_DEFAULT =

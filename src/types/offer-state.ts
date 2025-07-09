@@ -1,7 +1,7 @@
 import { City } from './city';
 import { Offers, Offer } from './offer';
 import { Reviews } from './review';
-import { AuthorizationStatus, SortType } from '../const';
+import { SortType } from '../const';
 
 export interface OfferState {
   city: City;
@@ -11,6 +11,5 @@ export interface OfferState {
   sortType: SortType;
   isLoading: boolean;
   error: string | null;
-  authorizationStatus: AuthorizationStatus;
   comments: Reviews;
 }
