@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { NameSpace } from '../../const';
 import { Offer } from '../../types/offer';
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
 import { toggleFavorite } from '../../store/data-process/data-process.slice';
+import { getAllOffers } from '../../store/data-process/data-process.selectors';
 
 function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
   const dispatch = useAppDispatch();
@@ -83,7 +83,7 @@ function CityOffers({city, offers}: {city: string; offers: Offer[]}): JSX.Elemen
 }
 
 function FavoritesScreen(): JSX.Element {
-  const allOffers = useAppSelector((state) => state[NameSpace.Data].allOffers);
+  const allOffers = useAppSelector(getAllOffers);
   const favoriteOffers = allOffers.filter((offer) => offer.isFavorite);
   const cities = Array.from(new Set(favoriteOffers.map((offer) => offer.city.name)));
 

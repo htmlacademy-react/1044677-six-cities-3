@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom';
 import { logoutAction } from '../../store/api-actions';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { AppRoute, AuthorizationStatus, NameSpace } from '../../const';
+import { getAllOffers } from '../../store/data-process/data-process.selectors';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 function Header(): JSX.Element {
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state) => state[NameSpace.User].authorizationStatus);
-  const favoritesCount = useAppSelector((state) => state[NameSpace.Data].allOffers.filter((offer) => offer.isFavorite).length);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const allOffers = useAppSelector(getAllOffers);
+  const favoritesCount = allOffers.filter((offer) => offer.isFavorite).length;
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
   const handleLogout = () => {

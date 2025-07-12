@@ -5,18 +5,20 @@ import { Helmet } from 'react-helmet-async';
 import Sort from '../../components/sort/sort';
 import Header from '../../components/header/header';
 import Spinner from '../../components/spinner/spinner';
+import { CITIES, DEFAULT_CITY, SortType } from '../../const';
 import OffersList from '../../components/offers-list/offers-list';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { changeCity } from '../../store/app-process/app-process.slice';
-import { CITIES, DEFAULT_CITY, NameSpace, SortType } from '../../const';
+import { getCity, getError, getSortType } from '../../store/app-process/app-process.selectors';
+import { getAllOffers, getDataIsLoading } from '../../store/data-process/data-process.selectors';
 
 function MainScreen(): JSX.Element {
   const dispatch = useAppDispatch();
-  const error = useAppSelector((state) => state[NameSpace.App].error);
-  const currentCity = useAppSelector((state) => state[NameSpace.App].city);
-  const sortType = useAppSelector((state) => state[NameSpace.App].sortType);
-  const isLoading = useAppSelector((state) => state[NameSpace.Data].isLoading);
-  const allOffers = useAppSelector((state) => state[NameSpace.Data].allOffers);
+  const error = useAppSelector(getError);
+  const currentCity = useAppSelector(getCity);
+  const sortType = useAppSelector(getSortType);
+  const isLoading = useAppSelector(getDataIsLoading);
+  const allOffers = useAppSelector(getAllOffers);
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity.title);
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
 

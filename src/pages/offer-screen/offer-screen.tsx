@@ -11,20 +11,22 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import { toggleFavorite } from '../../store/data-process/data-process.slice';
 import NearbyOffersList from '../../components/nearby-offers-list/nearby-offers-list';
 import { fetchComments, fetchOfferById, fetchNearbyOffers } from '../../store/action';
-import { CITIES, AuthorizationStatus, AppRoute, MAX_NEARBY_OFFERS, MAX_COMMENTS, NameSpace } from '../../const';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
+import { CITIES, AuthorizationStatus, AppRoute, MAX_NEARBY_OFFERS, MAX_COMMENTS } from '../../const';
+import { getComments, getCurrentOffer, getDataIsLoading, getNearbyOffers } from '../../store/data-process/data-process.selectors';
 
 function OfferScreen(): JSX.Element {
   const {id} = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const currentOffer = useAppSelector((state) => state[NameSpace.Data].currentOffer);
-  const nearbyOffers = useAppSelector((state) => state[NameSpace.Data].nearbyOffers);
+  const currentOffer = useAppSelector(getCurrentOffer);
+  const nearbyOffers = useAppSelector(getNearbyOffers);
   const nearbyOffersToShow = nearbyOffers.slice(0, MAX_NEARBY_OFFERS);
-  const comments = useAppSelector((state) => state[NameSpace.Data].comments);
+  const comments = useAppSelector(getComments);
   const commentsToShow = comments.slice(0, MAX_COMMENTS);
-  const authorizationStatus = useAppSelector((state) => state[NameSpace.User].authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
-  const isLoading = useAppSelector((state) => state[NameSpace.Data].isLoading);
+  const isLoading = useAppSelector(getDataIsLoading);
   const currentCity = CITIES.find((city) => city.title === currentOffer?.city.name) || CITIES[0];
 
   useEffect(() => {

@@ -9,6 +9,7 @@ export type AppDispatch = typeof store.dispatch;
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
+  userEmail: string | null;
 };
 
 export type DataProcess = {
