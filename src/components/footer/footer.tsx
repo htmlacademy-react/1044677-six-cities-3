@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 function Footer(): JSX.Element {
   return (
     <footer className="footer container">
@@ -8,4 +10,5 @@ function Footer(): JSX.Element {
   );
 }
 
-export default Footer;
+const MemoizedFooter = memo(Footer);
+export default MemoizedFooter;

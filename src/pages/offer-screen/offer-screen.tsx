@@ -2,24 +2,32 @@ import { useEffect } from 'react';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
+import Spinner from '../../components/spinner/spinner';
 import { useNavigate, useParams } from 'react-router-dom';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import ReviewForm from '../../components/review-form/review-form';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { CITIES, AuthorizationStatus, AppRoute } from '../../const';
 import ReviewsList from '../../components/reviews-list/reviews-list';
+import { toggleFavorite } from '../../store/data-process/data-process.slice';
 import NearbyOffersList from '../../components/nearby-offers-list/nearby-offers-list';
-import { toggleFavorite, fetchComments, fetchOfferById, fetchNearbyOffers } from '../../store/action';
+import { fetchComments, fetchOfferById, fetchNearbyOffers } from '../../store/action';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
+import { CITIES, AuthorizationStatus, AppRoute, MAX_NEARBY_OFFERS, MAX_COMMENTS } from '../../const';
+import { getComments, getCurrentOffer, getDataIsLoading, getNearbyOffers } from '../../store/data-process/data-process.selectors';
 
 function OfferScreen(): JSX.Element {
   const {id} = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const currentOffer = useAppSelector((state) => state.currentOffer);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
-  const comments = useAppSelector((state) => state.comments);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const currentOffer = useAppSelector(getCurrentOffer);
+  const nearbyOffers = useAppSelector(getNearbyOffers);
+  const nearbyOffersToShow = nearbyOffers.slice(0, MAX_NEARBY_OFFERS);
+  const comments = useAppSelector(getComments);
+  const commentsToShow = comments.slice(0, MAX_COMMENTS);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
+  const isLoading = useAppSelector(getDataIsLoading);
+  const currentCity = CITIES.find((city) => city.title === currentOffer?.city.name) || CITIES[0];
 
   useEffect(() => {
     if (id) {
@@ -44,16 +52,28 @@ function OfferScreen(): JSX.Element {
     }
   };
 
-  if (!currentOffer) {
+  if (isLoading) {
+    return (
+      <div className="page">
+        <Header />
+        <main className="page__main page__main--offer">
+          <div className="container">
+            <Spinner />
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (!currentOffer && !isLoading) {
     return <NotFoundScreen />;
   }
 
-  const currentCity = CITIES.find((city) => city.title === currentOffer.city.name) || CITIES[0];
 
   return (
     <div className="page">
       <Helmet>
-        <title>6 cities: {currentOffer.title}</title>
+        <title>6 cities: {currentOffer?.title}</title>
       </Helmet>
 
       <Header/>
@@ -62,26 +82,26 @@ function OfferScreen(): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOffer.images.map((image) => (
+              {currentOffer?.images.map((image) => (
                 <div className="offer__image-wrapper" key={image}>
-                  <img className="offer__image" src={image} alt={currentOffer.title} />
+                  <img className="offer__image" src={image} alt={currentOffer?.title} />
                 </div>
               ))}
             </div>
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {currentOffer.isPremium && (
+              {currentOffer?.isPremium && (
                 <div className="offer__mark">
                   <span>Premium</span>
                 </div>
               )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  {currentOffer.title}
+                  {currentOffer?.title}
                 </h1>
                 <button
-                  className={`offer__bookmark-button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''} button`}
+                  className={`offer__bookmark-button ${currentOffer?.isFavorite ? 'offer__bookmark-button--active' : ''} button`}
                   type="button"
                   onClick={() => authorizationStatus === AuthorizationStatus.Auth ? handleToggleFavorite() : navigate(AppRoute.Login)}
                 >
@@ -93,30 +113,30 @@ function OfferScreen(): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: `${currentOffer.rating * 20}%`}}></span>
+                  <span style={{width: `${currentOffer?.rating ? currentOffer.rating * 20 : 0}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">{currentOffer.rating}</span>
+                <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {currentOffer.type}
+                  {currentOffer?.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {currentOffer.bedrooms} Bedroom{currentOffer.bedrooms > 1 ? 's' : ''}
+                  {currentOffer?.bedrooms} Bedroom{currentOffer?.bedrooms && currentOffer.bedrooms > 1 ? 's' : ''}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {currentOffer.maxAdults} adult{currentOffer.maxAdults > 1 ? 's' : ''}
+                  Max {currentOffer?.maxAdults} adult{currentOffer?.maxAdults && currentOffer.maxAdults > 1 ? 's' : ''}
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;{currentOffer.price}</b>
+                <b className="offer__price-value">&euro;{currentOffer?.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {currentOffer.goods.map((good) => (
+                  {currentOffer?.goods.map((good) => (
                     <li className="offer__inside-item" key={good}>
                       {good}
                     </li>
@@ -127,21 +147,21 @@ function OfferScreen(): JSX.Element {
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="offer__avatar user__avatar" src={currentOffer.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
+                    <img className="offer__avatar user__avatar" src={currentOffer?.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
                   </div>
                   <span className="offer__user-name">
-                    {currentOffer.host.name}
+                    {currentOffer?.host.name}
                   </span>
                   <span className="offer__user-status">
-                    {currentOffer.host.isPro ? 'Pro' : ''}
+                    {currentOffer?.host.isPro ? 'Pro' : ''}
                   </span>
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    {currentOffer.description}
+                    {currentOffer?.description}
                   </p>
                 </div>
-                <ReviewsList reviews={comments} />
+                <ReviewsList reviews={commentsToShow} totalCount={comments.length} />
                 {isAuthorized ? (
                   <ReviewForm />
                 ) : ''}
@@ -151,7 +171,7 @@ function OfferScreen(): JSX.Element {
           <section className="offer__map map">
             <Map
               city={currentCity}
-              offers={nearbyOffers.slice(0, 3)}
+              offers={nearbyOffersToShow}
               activeOffer={currentOffer}
             />
           </section>
@@ -159,7 +179,7 @@ function OfferScreen(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <NearbyOffersList offers={nearbyOffers.slice(0, 3)} />
+            <NearbyOffersList offers={nearbyOffersToShow} />
           </section>
         </div>
       </main>

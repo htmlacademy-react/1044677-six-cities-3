@@ -1,8 +1,8 @@
 import { store } from '../store';
-import { setError } from '../store/action';
 import { clearErrorAction } from '../store/api-actions';
+import { setHasError } from '../store/app-process/app-process.slice';
 
-export const processErrorHandle = (message: string): void => {
-  store.dispatch(setError(message));
+export const processErrorHandle = (): void => {
+  store.dispatch(setHasError(true));
   store.dispatch(clearErrorAction());
 };

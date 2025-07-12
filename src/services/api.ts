@@ -2,14 +2,9 @@ import { store } from '../store';
 import { getToken } from './token';
 import { AuthorizationStatus } from '../const';
 import { StatusCodes } from 'http-status-codes';
-import { requireAuthorization } from '../store/action';
 import { processErrorHandle } from './proces-error-handle';
 import axios, { AxiosInstance, AxiosError, AxiosResponse } from 'axios';
-
-type DetailMessageType = {
-  type: string;
-  message: string;
-}
+import { requireAuthorization } from '../store/user-process/user-process.slice';
 
 const StatusCodeMapping: Record<number, boolean> = {
   [StatusCodes.BAD_REQUEST]: true,
@@ -38,14 +33,13 @@ export const createAPI = (): AxiosInstance => {
 
   api.interceptors.response.use(
     (response) => response,
-    (error: AxiosError<DetailMessageType>) => {
+    (error: AxiosError) => {
       if (error.response && shouldDisplayError(error.response)) {
-        const detailMessage = (error.response.data);
 
         if (error.response.status === 401) {
           store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
         } else {
-          processErrorHandle(detailMessage.message);
+          processErrorHandle();
         }
       }
 

@@ -1,6 +1,9 @@
 import { Helmet } from 'react-helmet-async';
+import { fetchOffers } from '../../store/action';
+import { useAppDispatch } from '../../hooks/store';
 
-function NotFoundScreen(): JSX.Element {
+function ErrorScreen(): JSX.Element {
+  const dispatch = useAppDispatch();
 
   return (
     <div className="page page--gray page--login">
@@ -36,8 +39,16 @@ function NotFoundScreen(): JSX.Element {
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="not-found__screen">
-            <h1>404. Page not found</h1>
-            <a href="/">Вернуться на главную</a>
+            <h1>Can&apos;t load offers</h1>
+            <button
+              onClick={() => {
+                dispatch(fetchOffers());
+              }}
+              className="login__submit form__submit button"
+              type="submit"
+            >
+              Try again!
+            </button>
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
@@ -49,5 +60,4 @@ function NotFoundScreen(): JSX.Element {
   );
 }
 
-
-export default NotFoundScreen;
+export default ErrorScreen;

@@ -1,8 +1,8 @@
-import { RATING_TITLES } from '../../const';
 import { useParams } from 'react-router-dom';
 import { leaveComment } from '../../store/action';
 import { useAppDispatch } from '../../hooks/store';
-import { useState, ChangeEvent, FormEvent, Fragment } from 'react';
+import { useState, ChangeEvent, FormEvent, Fragment, memo } from 'react';
+import { MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH, MIN_RATING, RATING_TITLES } from '../../const';
 
 function ReviewForm(): JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -10,6 +10,8 @@ function ReviewForm(): JSX.Element {
   const [formData, setFormData] = useState({rating: 0, review: ''});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [commentError, setCommentError] = useState<string | null>(null);
+  const isFormValid = formData.rating > 0 && formData.review.length >= MIN_COMMENT_LENGTH && formData.review.length <= MAX_COMMENT_LENGTH;
+  const isDisabled = !isFormValid || isSubmitting;
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -28,7 +30,7 @@ function ReviewForm(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (!id || formData.rating === 0 || formData.review.length < 50) {
+    if (!id || formData.rating < MIN_RATING || formData.review.length < MIN_COMMENT_LENGTH || formData.review.length > MAX_COMMENT_LENGTH) {
       return;
     }
 
@@ -52,8 +54,6 @@ function ReviewForm(): JSX.Element {
       });
   };
 
-  const isFormValid = formData.rating > 0 && formData.review.length >= 50 && formData.review.length <= 300;
-  const isDisabled = !isFormValid || isSubmitting;
 
   return (
     <form className="reviews__form form" onSubmit={handleSubmit}>
@@ -113,4 +113,5 @@ function ReviewForm(): JSX.Element {
   );
 }
 
-export default ReviewForm;
+const MemoizedReviewForm = memo(ReviewForm);
+export default MemoizedReviewForm;
