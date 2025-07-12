@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { memo, useCallback } from 'react';
 import { logoutAction } from '../../store/api-actions';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
@@ -12,9 +13,9 @@ function Header(): JSX.Element {
   const favoritesCount = allOffers.filter((offer) => offer.isFavorite).length;
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     dispatch(logoutAction());
-  };
+  }, [dispatch]);
 
   return (
     <header className="header">
@@ -70,4 +71,5 @@ function Header(): JSX.Element {
   );
 }
 
-export default Header;
+const MemoizedHeader = memo(Header);
+export default MemoizedHeader;

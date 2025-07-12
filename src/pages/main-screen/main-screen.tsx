@@ -15,11 +15,11 @@ import { getAllOffers, getDataIsLoading, getDataHasError } from '../../store/dat
 
 function MainScreen(): JSX.Element {
   const dispatch = useAppDispatch();
-  const hasError = useAppSelector(getDataHasError);
   const currentCity = useAppSelector(getCity);
   const sortType = useAppSelector(getSortType);
-  const isLoading = useAppSelector(getDataIsLoading);
   const allOffers = useAppSelector(getAllOffers);
+  const hasError = useAppSelector(getDataHasError);
+  const isLoading = useAppSelector(getDataIsLoading);
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity.title);
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
 
