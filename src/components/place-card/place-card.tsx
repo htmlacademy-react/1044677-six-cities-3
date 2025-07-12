@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { toggleFavorite } from '../../store/action';
-import { AuthorizationStatus, AppRoute } from '../../const';
 import { PlaceCard as PlaceCardType } from '../../types/offer';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { AuthorizationStatus, AppRoute, NameSpace } from '../../const';
+import { toggleFavorite } from '../../store/data-process/data-process.slice';
 
 type PlaceCardProps = {
   offer: PlaceCardType;
@@ -13,7 +13,7 @@ type PlaceCardProps = {
 function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector((state) => state[NameSpace.User].authorizationStatus);
   const {id, title, type, price, isPremium, isFavorite, previewImage, rating} = offer;
 
   const handleToggleFavorite = () => {

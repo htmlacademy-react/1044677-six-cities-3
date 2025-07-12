@@ -2,9 +2,9 @@ import { store } from '../store';
 import { getToken } from './token';
 import { AuthorizationStatus } from '../const';
 import { StatusCodes } from 'http-status-codes';
-import { requireAuthorization } from '../store/action';
 import { processErrorHandle } from './proces-error-handle';
 import axios, { AxiosInstance, AxiosError, AxiosResponse } from 'axios';
+import { requireAuthorization } from '../store/user-process/user-process.slice';
 
 type DetailMessageType = {
   type: string;

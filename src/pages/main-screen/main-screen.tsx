@@ -3,20 +3,20 @@ import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import Sort from '../../components/sort/sort';
-import { changeCity } from '../../store/action';
 import Header from '../../components/header/header';
 import Spinner from '../../components/spinner/spinner';
-import { CITIES, DEFAULT_CITY, SortType } from '../../const';
 import OffersList from '../../components/offers-list/offers-list';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { changeCity } from '../../store/app-process/app-process.slice';
+import { CITIES, DEFAULT_CITY, NameSpace, SortType } from '../../const';
 
 function MainScreen(): JSX.Element {
   const dispatch = useAppDispatch();
-  const error = useAppSelector((state) => state.error);
-  const currentCity = useAppSelector((state) => state.city);
-  const sortType = useAppSelector((state) => state.sortType);
-  const isLoading = useAppSelector((state) => state.isLoading);
-  const allOffers = useAppSelector((state) => state.allOffers);
+  const error = useAppSelector((state) => state[NameSpace.App].error);
+  const currentCity = useAppSelector((state) => state[NameSpace.App].city);
+  const sortType = useAppSelector((state) => state[NameSpace.App].sortType);
+  const isLoading = useAppSelector((state) => state[NameSpace.Data].isLoading);
+  const allOffers = useAppSelector((state) => state[NameSpace.Data].allOffers);
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity.title);
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
 

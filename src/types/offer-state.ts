@@ -1,7 +1,7 @@
 import { City } from './city';
-import { Offers, Offer } from './offer';
 import { Reviews } from './review';
 import { SortType } from '../const';
+import { Offers, Offer } from './offer';
 
 export interface OfferState {
   city: City;

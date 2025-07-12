@@ -1,7 +1,7 @@
-import { AppRoute } from '../../const';
 import { Helmet } from 'react-helmet-async';
 import Logo from '../../components/logo/logo';
 import { useNavigate } from 'react-router-dom';
+import { AppRoute, NameSpace } from '../../const';
 import { FormEvent, useRef, useState } from 'react';
 import { loginAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
@@ -15,7 +15,7 @@ function LoginScreen(): JSX.Element {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const error = useAppSelector((state) => state.error);
+  const error = useAppSelector((state) => state[NameSpace.App].error);
 
   const validatePassword = (password: string): boolean => {
     const hasLetter = /[a-zA-Z]/.test(password);

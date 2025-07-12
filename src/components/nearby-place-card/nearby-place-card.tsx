@@ -1,8 +1,8 @@
 import { Offer } from '../../types/offer';
-import { toggleFavorite } from '../../store/action';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthorizationStatus, AppRoute } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { AuthorizationStatus, AppRoute, NameSpace } from '../../const';
+import { toggleFavorite } from '../../store/data-process/data-process.slice';
 
 type NearbyPlaceCardProps = {
   offer: Offer;
@@ -11,7 +11,7 @@ type NearbyPlaceCardProps = {
 function NearbyPlaceCard({offer}: NearbyPlaceCardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector((state) => state[NameSpace.User].authorizationStatus);
   const {id, previewImage, price, rating, title, type, isPremium, isFavorite} = offer;
 
   const handleToggleFavorite = () => {

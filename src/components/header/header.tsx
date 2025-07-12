@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { logoutAction } from '../../store/api-actions';
-import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
+import { AppRoute, AuthorizationStatus, NameSpace } from '../../const';
 
 function Header(): JSX.Element {
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const favoritesCount = useAppSelector((state) => state.allOffers.filter((offer) => offer.isFavorite).length);
+  const authorizationStatus = useAppSelector((state) => state[NameSpace.User].authorizationStatus);
+  const favoritesCount = useAppSelector((state) => state[NameSpace.Data].allOffers.filter((offer) => offer.isFavorite).length);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
   const handleLogout = () => {
@@ -36,7 +36,7 @@ function Header(): JSX.Element {
                     <Link className="header__nav-link header__nav-link--profile" to="/favorites">
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
-                      <span className="header__user-name user__name">Eldar.Dusmuratov@gmail.com</span>
+                      <span className="header__user-name user__name">EldarDusmuratov@gmail.com</span>
                       <span className="header__favorite-count">{favoritesCount}</span>
                     </Link>
                   </li>

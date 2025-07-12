@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { SortType } from '../../const';
-import { changeSortType } from '../../store/action';
+import { SortType, NameSpace } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { changeSortType } from '../../store/app-process/app-process.slice';
 
 function Sort(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
-  const currentSort = useAppSelector((state) => state.sortType);
+  const currentSort = useAppSelector((state) => state[NameSpace.App].sortType);
 
   const handleSortClick = () => setIsOpen(!isOpen);
 
