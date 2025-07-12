@@ -5,16 +5,17 @@ import { Helmet } from 'react-helmet-async';
 import Sort from '../../components/sort/sort';
 import Header from '../../components/header/header';
 import Spinner from '../../components/spinner/spinner';
+import ErrorScreen from '../error-screen/error-screen';
 import { CITIES, DEFAULT_CITY, SortType } from '../../const';
 import OffersList from '../../components/offers-list/offers-list';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { changeCity } from '../../store/app-process/app-process.slice';
-import { getCity, getError, getSortType } from '../../store/app-process/app-process.selectors';
-import { getAllOffers, getDataIsLoading } from '../../store/data-process/data-process.selectors';
+import { getCity, getSortType } from '../../store/app-process/app-process.selectors';
+import { getAllOffers, getDataIsLoading, getDataHasError } from '../../store/data-process/data-process.selectors';
 
 function MainScreen(): JSX.Element {
   const dispatch = useAppDispatch();
-  const error = useAppSelector(getError);
+  const hasError = useAppSelector(getDataHasError);
   const currentCity = useAppSelector(getCity);
   const sortType = useAppSelector(getSortType);
   const isLoading = useAppSelector(getDataIsLoading);
@@ -62,27 +63,8 @@ function MainScreen(): JSX.Element {
     );
   }
 
-  if (error) {
-    return (
-      <div className="page page--gray page--main">
-        <Helmet>
-          <title>6 cities</title>
-        </Helmet>
-        <Header/>
-        <main className="page__main page__main--index">
-          <div className="container">
-            <div className="cities__places-container">
-              <section className="cities__places places">
-                <h2 className="visually-hidden">Places</h2>
-                <div className="cities__status-wrapper">
-                  <b className="cities__status">Error: {error}</b>
-                </div>
-              </section>
-            </div>
-          </div>
-        </main>
-      </div>
-    );
+  if (hasError) {
+    return <ErrorScreen />;
   }
 
   return (

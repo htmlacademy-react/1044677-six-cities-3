@@ -6,11 +6,6 @@ import { processErrorHandle } from './proces-error-handle';
 import axios, { AxiosInstance, AxiosError, AxiosResponse } from 'axios';
 import { requireAuthorization } from '../store/user-process/user-process.slice';
 
-type DetailMessageType = {
-  type: string;
-  message: string;
-}
-
 const StatusCodeMapping: Record<number, boolean> = {
   [StatusCodes.BAD_REQUEST]: true,
   [StatusCodes.UNAUTHORIZED]: true,
@@ -38,14 +33,13 @@ export const createAPI = (): AxiosInstance => {
 
   api.interceptors.response.use(
     (response) => response,
-    (error: AxiosError<DetailMessageType>) => {
+    (error: AxiosError) => {
       if (error.response && shouldDisplayError(error.response)) {
-        const detailMessage = (error.response.data);
 
         if (error.response.status === 401) {
           store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
         } else {
-          processErrorHandle(detailMessage.message);
+          processErrorHandle();
         }
       }
 

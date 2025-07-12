@@ -9,7 +9,7 @@ const initialState: DataProcess = {
   nearbyOffers: [],
   comments: [],
   isLoading: false,
-  error: null,
+  hasError: false,
 };
 
 export const dataProcess = createSlice({
@@ -38,19 +38,19 @@ export const dataProcess = createSlice({
     builder
       .addCase(fetchOffers.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
+        state.hasError = false;
       })
       .addCase(fetchOffers.fulfilled, (state, action) => {
         state.isLoading = false;
         state.allOffers = action.payload;
       })
-      .addCase(fetchOffers.rejected, (state, action) => {
+      .addCase(fetchOffers.rejected, (state) => {
         state.isLoading = false;
-        state.error = action.error?.message || 'Failed to load offers';
+        state.hasError = true;
       })
       .addCase(fetchOfferById.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
+        state.hasError = false;
       })
       .addCase(fetchOfferById.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -60,13 +60,13 @@ export const dataProcess = createSlice({
           isFavorite: offerInAllOffers ? offerInAllOffers.isFavorite : action.payload.isFavorite
         };
       })
-      .addCase(fetchOfferById.rejected, (state, action) => {
+      .addCase(fetchOfferById.rejected, (state) => {
         state.isLoading = false;
-        state.error = action.error?.message || 'Failed to load offer';
+        state.hasError = true;
       })
       .addCase(fetchNearbyOffers.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
+        state.hasError = false;
       })
       .addCase(fetchNearbyOffers.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -78,33 +78,33 @@ export const dataProcess = createSlice({
           };
         });
       })
-      .addCase(fetchNearbyOffers.rejected, (state, action) => {
+      .addCase(fetchNearbyOffers.rejected, (state) => {
         state.isLoading = false;
-        state.error = action.error?.message || 'Failed to load nearby offers';
+        state.hasError = true;
       })
       .addCase(fetchComments.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
+        state.hasError = false;
       })
       .addCase(fetchComments.fulfilled, (state, action) => {
         state.isLoading = false;
         state.comments = action.payload;
       })
-      .addCase(fetchComments.rejected, (state, action) => {
+      .addCase(fetchComments.rejected, (state) => {
         state.isLoading = false;
-        state.error = action.error?.message || 'Failed to load comments';
+        state.hasError = true;
       })
       .addCase(leaveComment.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
+        state.hasError = false;
       })
       .addCase(leaveComment.fulfilled, (state, action) => {
         state.isLoading = false;
         state.comments.unshift(action.payload);
       })
-      .addCase(leaveComment.rejected, (state, action) => {
+      .addCase(leaveComment.rejected, (state) => {
         state.isLoading = false;
-        state.error = action.error?.message || 'Failed to leave a comment';
+        state.hasError = true;
       });
   },
 });

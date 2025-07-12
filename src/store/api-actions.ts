@@ -6,13 +6,13 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { APIRoute, TIMEOUT_SHOW_ERROR } from '../const';
 import { saveToken, dropToken } from '../services/token';
 import { AppDispatch, RootState } from '../types/state.js';
-import { setError } from './app-process/app-process.slice';
+import { setHasError } from './app-process/app-process.slice';
 import { processErrorHandle } from '../services/proces-error-handle';
 
 export const clearErrorAction = createAsyncThunk(
   'error/clearError',
   () => {
-    setTimeout(() => store.dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
+    setTimeout(() => store.dispatch(setHasError(false)), TIMEOUT_SHOW_ERROR);
   },
 );
 
@@ -38,7 +38,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
       const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
       saveToken(token);
     } catch (error) {
-      processErrorHandle('Login failed');
+      processErrorHandle();
       throw error;
     }
   },

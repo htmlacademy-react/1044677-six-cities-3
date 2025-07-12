@@ -7,7 +7,7 @@ const initialState: AppProcess = {
   city: DEFAULT_CITY,
   sortType: SortType.Popular,
   isLoading: false,
-  error: null,
+  hasError: false,
   isDataLoaded: false,
   isCommentSending: false,
   isFavorite: false,
@@ -23,11 +23,11 @@ export const appProcess = createSlice({
     changeSortType: (state, action: PayloadAction<SortType>) => {
       state.sortType = action.payload;
     },
-    setError: (state, action: PayloadAction<string | null>) => {
-      state.error = action.payload;
+    setHasError: (state, action: PayloadAction<boolean>) => {
+      state.hasError = action.payload;
     },
   },
   extraReducers() {},
 });
 
-export const { changeCity, changeSortType, setError } = appProcess.actions;
+export const { changeCity, changeSortType, setHasError } = appProcess.actions;

@@ -18,14 +18,14 @@ export type DataProcess = {
   nearbyOffers: Offer[];
   comments: Review[];
   isLoading: boolean;
-  error: string | null;
+  hasError: boolean;
 };
 
 export type AppProcess = {
   city: City;
   sortType: SortType;
   isLoading: boolean;
-  error: string | null;
+  hasError: boolean;
   isDataLoaded: boolean;
   isCommentSending: boolean;
   isFavorite: boolean;
