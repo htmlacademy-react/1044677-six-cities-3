@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthorizationStatus, AppRoute } from '../../const';
 import { PlaceCard as PlaceCardType } from '../../types/offer';
@@ -76,4 +77,5 @@ function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Ele
   );
 }
 
-export default PlaceCard;
+const MemoizedPlaceCard = memo(PlaceCard);
+export default MemoizedPlaceCard;

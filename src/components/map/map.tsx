@@ -2,8 +2,8 @@ import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { LayerGroup } from 'leaflet';
 import { City } from '../../types/city';
-import { useRef, useEffect } from 'react';
 import useMap from '../../hooks/use-map';
+import { useRef, useEffect, memo } from 'react';
 import { Offers, Offer } from '../../types/offer';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 
@@ -69,4 +69,5 @@ function Map(props: MapProps): JSX.Element {
   );
 }
 
-export default Map;
+const MemoizedMap = memo(Map);
+export default MemoizedMap;

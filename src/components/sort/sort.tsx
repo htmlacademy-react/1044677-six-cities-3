@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { SortType } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { changeSortType } from '../../store/app-process/app-process.slice';
@@ -63,4 +63,5 @@ function Sort(): JSX.Element {
   );
 }
 
-export default Sort;
+const MemoizedSort = memo(Sort);
+export default MemoizedSort;

@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { leaveComment } from '../../store/action';
 import { useAppDispatch } from '../../hooks/store';
-import { useState, ChangeEvent, FormEvent, Fragment } from 'react';
+import { useState, ChangeEvent, FormEvent, Fragment, memo } from 'react';
 import { MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH, MIN_RATING, RATING_TITLES } from '../../const';
 
 function ReviewForm(): JSX.Element {
@@ -113,4 +113,5 @@ function ReviewForm(): JSX.Element {
   );
 }
 
-export default ReviewForm;
+const MemoizedReviewForm = memo(ReviewForm);
+export default MemoizedReviewForm;

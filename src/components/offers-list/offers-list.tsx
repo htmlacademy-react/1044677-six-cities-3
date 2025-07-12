@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Offer } from '../../types/offer';
 import PlaceCard from '../place-card/place-card';
 
@@ -22,4 +23,5 @@ function OffersList({offers, onMouseEnter, onMouseLeave}: OffersListProps): JSX.
   );
 }
 
-export default OffersList;
+const MemoizedOffersList = memo(OffersList);
+export default MemoizedOffersList;
