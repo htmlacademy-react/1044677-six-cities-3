@@ -3,22 +3,23 @@ import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import Sort from '../../components/sort/sort';
-import { changeCity } from '../../store/action';
 import Header from '../../components/header/header';
 import Spinner from '../../components/spinner/spinner';
+import ErrorScreen from '../error-screen/error-screen';
 import { CITIES, DEFAULT_CITY, SortType } from '../../const';
 import OffersList from '../../components/offers-list/offers-list';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { changeCity } from '../../store/app-process/app-process.slice';
+import { getCity, getSortType } from '../../store/app-process/app-process.selectors';
+import { getAllOffers, getDataIsLoading, getDataHasError } from '../../store/data-process/data-process.selectors';
 
 function MainScreen(): JSX.Element {
-  const currentCity = useAppSelector((state) => state.city);
-  const allOffers = useAppSelector((state) => state.allOffers);
-  const sortType = useAppSelector((state) => state.sortType);
-  const isLoading = useAppSelector((state) => state.isLoading);
-  const error = useAppSelector((state) => state.error);
-
   const dispatch = useAppDispatch();
-
+  const currentCity = useAppSelector(getCity);
+  const sortType = useAppSelector(getSortType);
+  const allOffers = useAppSelector(getAllOffers);
+  const hasError = useAppSelector(getDataHasError);
+  const isLoading = useAppSelector(getDataIsLoading);
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity.title);
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
 
@@ -62,27 +63,8 @@ function MainScreen(): JSX.Element {
     );
   }
 
-  if (error) {
-    return (
-      <div className="page page--gray page--main">
-        <Helmet>
-          <title>6 cities</title>
-        </Helmet>
-        <Header/>
-        <main className="page__main page__main--index">
-          <div className="container">
-            <div className="cities__places-container">
-              <section className="cities__places places">
-                <h2 className="visually-hidden">Places</h2>
-                <div className="cities__status-wrapper">
-                  <b className="cities__status">Error: {error}</b>
-                </div>
-              </section>
-            </div>
-          </div>
-        </main>
-      </div>
-    );
+  if (hasError) {
+    return <ErrorScreen />;
   }
 
   return (

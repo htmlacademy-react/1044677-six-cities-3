@@ -1,10 +1,11 @@
 import { useAppSelector } from '../../hooks/store';
+import { getHasError } from '../../store/app-process/app-process.selectors';
 
 function ErrorMessage(): JSX.Element | null {
-  const error = useAppSelector((state) => state.error);
+  const hasError = useAppSelector(getHasError);
 
-  return (error)
-    ? <div className='error-message'>{error}</div>
+  return (hasError)
+    ? <div className='error-message'>{hasError}</div>
     : null;
 
 }

@@ -1,17 +1,21 @@
 import { Link } from 'react-router-dom';
+import { memo, useCallback } from 'react';
 import { logoutAction } from '../../store/api-actions';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
+import { getAllOffers } from '../../store/data-process/data-process.selectors';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 function Header(): JSX.Element {
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const favoritesCount = useAppSelector((state) => state.allOffers.filter((offer) => offer.isFavorite).length);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const allOffers = useAppSelector(getAllOffers);
+  const favoritesCount = allOffers.filter((offer) => offer.isFavorite).length;
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     dispatch(logoutAction());
-  };
+  }, [dispatch]);
 
   return (
     <header className="header">
@@ -36,7 +40,7 @@ function Header(): JSX.Element {
                     <Link className="header__nav-link header__nav-link--profile" to="/favorites">
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
-                      <span className="header__user-name user__name">Eldar.Dusmuratov@gmail.com</span>
+                      <span className="header__user-name user__name">EldarDusmuratov@gmail.com</span>
                       <span className="header__favorite-count">{favoritesCount}</span>
                     </Link>
                   </li>
@@ -67,4 +71,5 @@ function Header(): JSX.Element {
   );
 }
 
-export default Header;
+const MemoizedHeader = memo(Header);
+export default MemoizedHeader;

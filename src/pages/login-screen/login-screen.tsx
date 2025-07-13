@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { FormEvent, useRef, useState } from 'react';
 import { loginAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { getHasError } from '../../store/app-process/app-process.selectors';
 
 function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -15,7 +16,7 @@ function LoginScreen(): JSX.Element {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const error = useAppSelector((state) => state.error);
+  const hasError = useAppSelector(getHasError);
 
   const validatePassword = (password: string): boolean => {
     const hasLetter = /[a-zA-Z]/.test(password);
@@ -104,9 +105,9 @@ function LoginScreen(): JSX.Element {
                   {passwordError}
                 </div>
               )}
-              {error && (
+              {hasError && (
                 <div className="login__error">
-                  {error}
+                  {hasError}
                 </div>
               )}
               <button
