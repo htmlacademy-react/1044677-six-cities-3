@@ -10,5 +10,4 @@ function Footer(): JSX.Element {
   );
 }
 
-const MemoizedFooter = memo(Footer);
-export default MemoizedFooter;
+export default memo(Footer);

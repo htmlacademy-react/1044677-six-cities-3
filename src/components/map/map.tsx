@@ -69,5 +69,4 @@ function Map(props: MapProps): JSX.Element {
   );
 }
 
-const MemoizedMap = memo(Map);
-export default MemoizedMap;
+export default memo(Map);

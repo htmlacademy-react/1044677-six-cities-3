@@ -113,5 +113,4 @@ function ReviewForm(): JSX.Element {
   );
 }
 
-const MemoizedReviewForm = memo(ReviewForm);
-export default MemoizedReviewForm;
+export default memo(ReviewForm);

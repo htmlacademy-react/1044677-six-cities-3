@@ -77,5 +77,4 @@ function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Ele
   );
 }
 
-const MemoizedPlaceCard = memo(PlaceCard);
-export default MemoizedPlaceCard;
+export default memo(PlaceCard);
