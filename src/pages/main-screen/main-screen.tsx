@@ -4,9 +4,10 @@ import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
 import Sort from '../../components/sort/sort';
 import Header from '../../components/header/header';
+import { DEFAULT_CITY, SortType } from '../../const';
 import Spinner from '../../components/spinner/spinner';
 import ErrorScreen from '../error-screen/error-screen';
-import { CITIES, DEFAULT_CITY, SortType } from '../../const';
+import Locations from '../../components/locations/locations';
 import OffersList from '../../components/offers-list/offers-list';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { changeCity } from '../../store/app-process/app-process.slice';
@@ -76,24 +77,10 @@ function MainScreen(): JSX.Element {
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              {CITIES.map((city) => (
-                <li className="locations__item" key={city.title}>
-                  <a
-                    className={`locations__item-link tabs__item ${city.title === currentCity.title ? ' tabs__item--active' : ''}`}
-                    href="#"
-                    onClick={(evt) => {
-                      evt.preventDefault();
-                      handleCityChange(city);
-                    }}
-                  >
-                    <span>{city.title}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
+          <Locations
+            currentCity={currentCity}
+            handleCityChange ={handleCityChange}
+          />
         </div>
         <div className="cities">
           <div className="cities__places-container container">
