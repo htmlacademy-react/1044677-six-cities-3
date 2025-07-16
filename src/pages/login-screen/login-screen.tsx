@@ -22,7 +22,15 @@ function LoginScreen(): JSX.Element {
   const hasError = useAppSelector(getHasError);
 
   useEffect(() => {
-    setRandomCity(getRandomCity());
+    let isMounted = true;
+
+    if (isMounted) {
+      setRandomCity(getRandomCity());
+    }
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const validatePassword = (password: string): boolean => {

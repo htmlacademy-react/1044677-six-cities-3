@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { AppRoute } from '../../const';
+import { useEffect, useRef } from 'react';
 import { fetchOffers } from '../../store/action';
 import { useAppDispatch } from '../../hooks/store';
 import { HelmetProvider } from 'react-helmet-async';
@@ -14,10 +14,19 @@ import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
-    dispatch(fetchOffers());
-    dispatch(checkAuthAction());
+    isMountedRef.current = true;
+
+    if (isMountedRef.current) {
+      dispatch(fetchOffers());
+      dispatch(checkAuthAction());
+    }
+
+    return () => {
+      isMountedRef.current = false;
+    };
   }, [dispatch]);
 
   return (
