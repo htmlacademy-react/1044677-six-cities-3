@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
+import { toggleFavorite } from '../../store/action';
 import Header from '../../components/header/header';
 import Spinner from '../../components/spinner/spinner';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,7 +9,6 @@ import NotFoundScreen from '../not-found-screen/not-found-screen';
 import ReviewForm from '../../components/review-form/review-form';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import { toggleFavorite } from '../../store/data-process/data-process.slice';
 import NearbyOffersList from '../../components/nearby-offers-list/nearby-offers-list';
 import { fetchComments, fetchOfferById, fetchNearbyOffers } from '../../store/action';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
@@ -48,7 +48,7 @@ function OfferScreen(): JSX.Element {
 
   const handleToggleFavorite = () => {
     if (id) {
-      dispatch(toggleFavorite(id));
+      dispatch(toggleFavorite({offerId: id, isFavorite: currentOffer?.isFavorite || false}));
     }
   };
 

@@ -3,15 +3,15 @@ import { Offer } from '../../types/offer';
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import { toggleFavorite } from '../../store/action';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { toggleFavorite } from '../../store/data-process/data-process.slice';
 import { getAllOffers } from '../../store/data-process/data-process.selectors';
 
 function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
   const dispatch = useAppDispatch();
 
   const handleToggleFavorite = () => {
-    dispatch(toggleFavorite(offer.id));
+    dispatch(toggleFavorite({offerId: offer.id, isFavorite: offer.isFavorite}));
   };
 
   return (

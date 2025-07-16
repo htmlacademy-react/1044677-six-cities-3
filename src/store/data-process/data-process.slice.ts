@@ -1,7 +1,8 @@
 import { NameSpace } from '../../const';
+import { Offer } from '../../types/offer';
 import { DataProcess } from '../../types/state';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchOffers, fetchOfferById, fetchNearbyOffers, fetchComments, leaveComment } from '../action';
+import { fetchOffers, fetchOfferById, fetchNearbyOffers, fetchComments, leaveComment, toggleFavorite } from '../action';
 
 const initialState: DataProcess = {
   allOffers: [],
@@ -15,25 +16,7 @@ const initialState: DataProcess = {
 export const dataProcess = createSlice({
   name: NameSpace.Data,
   initialState,
-  reducers: {
-    toggleFavorite: (state, action: PayloadAction<string>) => {
-      const offerId = action.payload;
-
-      const offerInAllOffers = state.allOffers.find((offer) => offer.id === offerId);
-      if (offerInAllOffers) {
-        offerInAllOffers.isFavorite = !offerInAllOffers.isFavorite;
-      }
-
-      if (state.currentOffer && state.currentOffer.id === offerId) {
-        state.currentOffer.isFavorite = !state.currentOffer.isFavorite;
-      }
-
-      const nearbyOffer = state.nearbyOffers.find((offer) => offer.id === offerId);
-      if (nearbyOffer) {
-        nearbyOffer.isFavorite = !nearbyOffer.isFavorite;
-      }
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchOffers.pending, (state) => {
@@ -105,8 +88,23 @@ export const dataProcess = createSlice({
       .addCase(leaveComment.rejected, (state) => {
         state.isLoading = false;
         state.hasError = true;
+      })
+      .addCase(toggleFavorite.fulfilled, (state, action: PayloadAction<Offer>) => {
+        const updatedOffer = action.payload;
+
+        const offerInAllOffers = state.allOffers.find((offer) => offer.id === updatedOffer.id);
+        if (offerInAllOffers) {
+          offerInAllOffers.isFavorite = updatedOffer.isFavorite;
+        }
+
+        if (state.currentOffer && state.currentOffer.id === updatedOffer.id) {
+          state.currentOffer.isFavorite = updatedOffer.isFavorite;
+        }
+
+        const nearbyOffer = state.nearbyOffers.find((offer) => offer.id === updatedOffer.id);
+        if (nearbyOffer) {
+          nearbyOffer.isFavorite = updatedOffer.isFavorite;
+        }
       });
   },
 });
-
-export const { toggleFavorite } = dataProcess.actions;
