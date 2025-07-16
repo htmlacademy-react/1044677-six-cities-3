@@ -1,10 +1,12 @@
 import { AppRoute } from '../../const';
 import { Helmet } from 'react-helmet-async';
+import { getRandomCity } from '../../utils';
 import Logo from '../../components/logo/logo';
 import { useNavigate } from 'react-router-dom';
-import { FormEvent, useRef, useState } from 'react';
 import { loginAction } from '../../store/api-actions';
+import { FormEvent, useRef, useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { changeCity } from '../../store/app-process/app-process.slice';
 import { getHasError } from '../../store/app-process/app-process.selectors';
 
 function LoginScreen(): JSX.Element {
@@ -13,10 +15,23 @@ function LoginScreen(): JSX.Element {
 
   const [passwordError, setPasswordError] = useState<string>('');
   const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [randomCity, setRandomCity] = useState(getRandomCity());
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const hasError = useAppSelector(getHasError);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+      setRandomCity(getRandomCity());
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const validatePassword = (password: string): boolean => {
     const hasLetter = /[a-zA-Z]/.test(password);
@@ -52,6 +67,11 @@ function LoginScreen(): JSX.Element {
           navigate(AppRoute.Main);
         });
     }
+  };
+
+  const handleRandomCityClick = () => {
+    dispatch(changeCity(randomCity));
+    navigate(AppRoute.Main);
   };
 
   return (
@@ -119,9 +139,13 @@ function LoginScreen(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
-              </a>
+              <button
+                className="locations__item-link"
+                type="button"
+                onClick={handleRandomCityClick}
+              >
+                <span>{randomCity.title}</span>
+              </button>
             </div>
           </section>
         </div>

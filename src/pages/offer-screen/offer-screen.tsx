@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
+import { toggleFavorite } from '../../store/action';
 import Header from '../../components/header/header';
 import Spinner from '../../components/spinner/spinner';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,17 +9,17 @@ import NotFoundScreen from '../not-found-screen/not-found-screen';
 import ReviewForm from '../../components/review-form/review-form';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import { toggleFavorite } from '../../store/data-process/data-process.slice';
 import NearbyOffersList from '../../components/nearby-offers-list/nearby-offers-list';
 import { fetchComments, fetchOfferById, fetchNearbyOffers } from '../../store/action';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
-import { CITIES, AuthorizationStatus, AppRoute, MAX_NEARBY_OFFERS, MAX_COMMENTS } from '../../const';
+import { CITIES, AuthorizationStatus, AppRoute, MAX_NEARBY_OFFERS, MAX_COMMENTS, RATING_MULTIPLIER } from '../../const';
 import { getComments, getCurrentOffer, getDataIsLoading, getNearbyOffers } from '../../store/data-process/data-process.selectors';
 
 function OfferScreen(): JSX.Element {
   const {id} = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const isMountedRef = useRef(true);
   const currentOffer = useAppSelector(getCurrentOffer);
   const nearbyOffers = useAppSelector(getNearbyOffers);
   const nearbyOffersToShow = nearbyOffers.slice(0, MAX_NEARBY_OFFERS);
@@ -30,25 +31,33 @@ function OfferScreen(): JSX.Element {
   const currentCity = CITIES.find((city) => city.title === currentOffer?.city.name) || CITIES[0];
 
   useEffect(() => {
-    if (id) {
+    isMountedRef.current = true;
+
+    if (id && isMountedRef.current) {
       dispatch(fetchOfferById(id));
       dispatch(fetchNearbyOffers(id));
       dispatch(fetchComments(id));
     }
+
+    return () => {
+      isMountedRef.current = false;
+    };
   }, [dispatch, id]);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
+    if (isMountedRef.current) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
   }, [id]);
 
 
   const handleToggleFavorite = () => {
     if (id) {
-      dispatch(toggleFavorite(id));
+      dispatch(toggleFavorite({offerId: id, isFavorite: currentOffer?.isFavorite || false}));
     }
   };
 
@@ -113,7 +122,7 @@ function OfferScreen(): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: `${currentOffer?.rating ? currentOffer.rating * 20 : 0}%`}}></span>
+                  <span style={{width: `${currentOffer?.rating ? currentOffer.rating * RATING_MULTIPLIER : 0}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>

@@ -33,11 +33,13 @@ function Map(props: MapProps): JSX.Element {
   const markerLayer = useRef<LayerGroup>(leaflet.layerGroup());
 
   useEffect(() => {
-    if (map) {
+    let isMounted = true;
+
+    if (map && isMounted) {
       markerLayer.current.addTo(map);
       markerLayer.current.clearLayers();
 
-      if (activeOffer) {
+      if (activeOffer && isMounted) {
         leaflet.marker({
           lat: activeOffer.location.latitude,
           lng: activeOffer.location.longitude
@@ -46,17 +48,23 @@ function Map(props: MapProps): JSX.Element {
         }).addTo(markerLayer.current);
       }
 
-      offers.forEach((offer) => {
-        if (!activeOffer || offer.id !== activeOffer.id) {
-          leaflet.marker({
-            lat: offer.location.latitude,
-            lng: offer.location.longitude
-          }, {
-            icon: defaultMarkerIcon
-          }).addTo(markerLayer.current);
-        }
-      });
+      if (isMounted) {
+        offers.forEach((offer) => {
+          if (!activeOffer || offer.id !== activeOffer.id) {
+            leaflet.marker({
+              lat: offer.location.latitude,
+              lng: offer.location.longitude
+            }, {
+              icon: defaultMarkerIcon
+            }).addTo(markerLayer.current);
+          }
+        });
+      }
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [map, offers, activeOffer]);
 
   return (
@@ -69,5 +77,4 @@ function Map(props: MapProps): JSX.Element {
   );
 }
 
-const MemoizedMap = memo(Map);
-export default MemoizedMap;
+export default memo(Map);

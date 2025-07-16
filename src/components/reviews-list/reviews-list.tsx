@@ -20,5 +20,4 @@ function ReviewsList({reviews, totalCount}: ReviewsListProps): JSX.Element {
   );
 }
 
-const MemoizedReviewsList = memo(ReviewsList);
-export default MemoizedReviewsList;
+export default memo(ReviewsList);

@@ -10,6 +10,8 @@ function useMap(
   const isInitializedRef = useRef(false);
 
   useEffect(() => {
+    let isMounted = true;
+
     if (mapRef.current !== null && !isInitializedRef.current) {
       const instance = new Map(mapRef.current, {
         center: {
@@ -28,11 +30,15 @@ function useMap(
       );
 
       instance.addLayer(layer);
-      setMap(instance);
-      isInitializedRef.current = true;
+
+      if (isMounted) {
+        setMap(instance);
+        isInitializedRef.current = true;
+      }
     }
 
     return () => {
+      isMounted = false;
       if (map) {
         map.remove();
         isInitializedRef.current = false;
@@ -42,19 +48,27 @@ function useMap(
   }, [mapRef]);
 
   useEffect(() => {
+    let isMounted = true;
+
     if (map && isInitializedRef.current) {
       setTimeout(() => {
-        map.invalidateSize();
-        map.setView(
-          {
-            lat: city.lat,
-            lng: city.lng
-          },
-          city.zoom || 13
-        );
+        if (isMounted) {
+          map.invalidateSize();
+          map.setView(
+            {
+              lat: city.lat,
+              lng: city.lng
+            },
+            city.zoom || 13
+          );
+        }
       }, 10);
     }
-  }, [map, city]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [map, city.lat, city.lng, city.zoom]);
 
   return map;
 }
