@@ -1,6 +1,7 @@
 import { NameSpace } from '../../const';
 import { Offer } from '../../types/offer';
 import { DataProcess } from '../../types/state';
+import { logoutAction, loginAction } from '../api-actions';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchOffers, fetchOfferById, fetchNearbyOffers, fetchComments, leaveComment, toggleFavorite } from '../action';
 
@@ -105,6 +106,40 @@ export const dataProcess = createSlice({
         if (nearbyOffer) {
           nearbyOffer.isFavorite = updatedOffer.isFavorite;
         }
+      })
+      .addCase(logoutAction.fulfilled, (state) => {
+        state.allOffers = state.allOffers.map((offer) => ({
+          ...offer,
+          isFavorite: false
+        }));
+
+        if (state.currentOffer) {
+          state.currentOffer.isFavorite = false;
+        }
+
+        state.nearbyOffers = state.nearbyOffers.map((offer) => ({
+          ...offer,
+          isFavorite: false
+        }));
+
+        state.comments = [];
+      })
+      .addCase(loginAction.fulfilled, (state) => {
+        state.allOffers = state.allOffers.map((offer) => ({
+          ...offer,
+          isFavorite: false
+        }));
+
+        if (state.currentOffer) {
+          state.currentOffer.isFavorite = false;
+        }
+
+        state.nearbyOffers = state.nearbyOffers.map((offer) => ({
+          ...offer,
+          isFavorite: false
+        }));
+
+        state.comments = [];
       });
   },
 });

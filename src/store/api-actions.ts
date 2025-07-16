@@ -1,5 +1,6 @@
 import { store } from '../store';
 import { AxiosInstance } from 'axios';
+import { fetchOffers } from './action';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -34,10 +35,13 @@ export const loginAction = createAsyncThunk<UserData, AuthData, {
   extra: AxiosInstance;
 }>(
   'user/login',
-  async ({login: email, password}, {extra: api}) => {
+  async ({login: email, password}, {dispatch, extra: api}) => {
     try {
       const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
       saveToken(data.token);
+
+      dispatch(fetchOffers());
+
       return data;
     } catch (error) {
       processErrorHandle();
