@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { Helmet } from 'react-helmet-async';
+import { RATING_MULTIPLIER } from '../../const';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import { toggleFavorite } from '../../store/action';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { toggleFavorite } from '../../store/data-process/data-process.slice';
 import { getAllOffers } from '../../store/data-process/data-process.selectors';
 
 function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
   const dispatch = useAppDispatch();
 
   const handleToggleFavorite = () => {
-    dispatch(toggleFavorite(offer.id));
+    dispatch(toggleFavorite({offerId: offer.id, isFavorite: offer.isFavorite}));
   };
 
   return (
@@ -50,7 +51,7 @@ function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${offer.rating * 20}%`}}></span>
+            <span style={{width: `${offer.rating * RATING_MULTIPLIER}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

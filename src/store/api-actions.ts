@@ -1,5 +1,6 @@
 import { store } from '../store';
 import { AxiosInstance } from 'axios';
+import { fetchOffers } from './action';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -16,27 +17,32 @@ export const clearErrorAction = createAsyncThunk(
   },
 );
 
-export const checkAuthAction = createAsyncThunk<void, undefined, {
+export const checkAuthAction = createAsyncThunk<UserData, undefined, {
   dispatch: AppDispatch;
   state: RootState;
   extra: AxiosInstance;
 }>(
   'user/checkAuth',
   async (_arg, {extra: api}) => {
-    await api.get(APIRoute.Login);
+    const {data} = await api.get<UserData>(APIRoute.Login);
+    return data;
   },
 );
 
-export const loginAction = createAsyncThunk<void, AuthData, {
+export const loginAction = createAsyncThunk<UserData, AuthData, {
   dispatch: AppDispatch;
   state: RootState;
   extra: AxiosInstance;
 }>(
   'user/login',
-  async ({login: email, password}, {extra: api}) => {
+  async ({login: email, password}, {dispatch, extra: api}) => {
     try {
-      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
-      saveToken(token);
+      const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
+      saveToken(data.token);
+
+      dispatch(fetchOffers());
+
+      return data;
     } catch (error) {
       processErrorHandle();
       throw error;

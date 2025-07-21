@@ -34,3 +34,10 @@ export const leaveComment = createAsyncThunk<Review, {offerId: string; comment: 
   const response = await api.post<Review>(`${APIRoute.Comments}/${offerId}`, {comment, rating});
   return response.data;
 });
+
+export const toggleFavorite = createAsyncThunk<Offer, {offerId: string; isFavorite: boolean}, {extra: AxiosInstance}>
+('offers/toggleFavorite', async ({offerId, isFavorite}, { extra: api }) => {
+  const status = isFavorite ? 0 : 1;
+  const response = await api.post<Offer>(`${APIRoute.Favorite}/${offerId}/${status}`);
+  return response.data;
+});

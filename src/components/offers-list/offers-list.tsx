@@ -23,5 +23,4 @@ function OffersList({offers, onMouseEnter, onMouseLeave}: OffersListProps): JSX.
   );
 }
 
-const MemoizedOffersList = memo(OffersList);
-export default MemoizedOffersList;
+export default memo(OffersList);

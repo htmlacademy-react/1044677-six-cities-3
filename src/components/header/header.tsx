@@ -4,11 +4,12 @@ import { logoutAction } from '../../store/api-actions';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
 import { getAllOffers } from '../../store/data-process/data-process.selectors';
-import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
+import { getAuthorizationStatus, getUserEmail } from '../../store/user-process/user-process.selectors';
 
 function Header(): JSX.Element {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const userEmail = useAppSelector(getUserEmail);
   const allOffers = useAppSelector(getAllOffers);
   const favoritesCount = allOffers.filter((offer) => offer.isFavorite).length;
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
@@ -40,7 +41,7 @@ function Header(): JSX.Element {
                     <Link className="header__nav-link header__nav-link--profile" to="/favorites">
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
-                      <span className="header__user-name user__name">EldarDusmuratov@gmail.com</span>
+                      <span className="header__user-name user__name">{userEmail || 'Keks@htmlacademy.ru'}</span>
                       <span className="header__favorite-count">{favoritesCount}</span>
                     </Link>
                   </li>
@@ -71,5 +72,4 @@ function Header(): JSX.Element {
   );
 }
 
-const MemoizedHeader = memo(Header);
-export default MemoizedHeader;
+export default memo(Header);

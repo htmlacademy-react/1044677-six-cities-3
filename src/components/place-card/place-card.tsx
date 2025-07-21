@@ -1,14 +1,14 @@
 import { memo } from 'react';
+import { Offer } from '../../types/offer';
+import { toggleFavorite } from '../../store/action';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthorizationStatus, AppRoute } from '../../const';
-import { PlaceCard as PlaceCardType } from '../../types/offer';
-import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import { toggleFavorite } from '../../store/data-process/data-process.slice';
+import { useAppSelector, useAppDispatch } from '../../hooks/store';
+import { AppRoute, AuthorizationStatus, RATING_MULTIPLIER } from '../../const';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 type PlaceCardProps = {
-  offer: PlaceCardType;
-  onMouseEnter: () => void;
+  offer: Offer;
+  onMouseEnter?: (offer: Offer) => void;
   onMouseLeave?: () => void;
 }
 
@@ -19,13 +19,13 @@ function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Ele
   const {id, title, type, price, isPremium, isFavorite, previewImage, rating} = offer;
 
   const handleToggleFavorite = () => {
-    dispatch(toggleFavorite(id));
+    dispatch(toggleFavorite({offerId: id, isFavorite}));
   };
 
   return (
     <article
       className="cities__card place-card"
-      onMouseEnter={onMouseEnter}
+      onMouseEnter={onMouseEnter ? () => onMouseEnter(offer) : undefined}
       onMouseLeave={onMouseLeave}
     >
       {isPremium && (
@@ -62,7 +62,7 @@ function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Ele
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${rating * 20}%`}}></span>
+            <span style={{width: `${rating * RATING_MULTIPLIER}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -77,5 +77,4 @@ function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Ele
   );
 }
 
-const MemoizedPlaceCard = memo(PlaceCard);
-export default MemoizedPlaceCard;
+export default memo(PlaceCard);
