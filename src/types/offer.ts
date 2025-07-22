@@ -4,7 +4,7 @@ export type Location = {
   zoom: number;
 };
 
-export type City = {
+export type OfferCity = {
   name: string;
   location: Location;
 };
@@ -14,7 +14,7 @@ export type Offer = {
   title: string;
   type: string;
   price: number;
-  city: City;
+  city: OfferCity;
   location: Location;
   isFavorite: boolean;
   isPremium: boolean;
@@ -40,7 +40,7 @@ export type PlaceCard = {
   type: string;
   price: number;
   previewImage: string;
-  city: City;
+  city: OfferCity;
   location: Location;
   isFavorite: boolean;
   isPremium: boolean;

@@ -1,4 +1,3 @@
-import { store } from '../store';
 import { AxiosInstance } from 'axios';
 import { fetchOffers } from './action';
 import { AuthData } from '../types/auth-data';
@@ -10,10 +9,14 @@ import { AppDispatch, RootState } from '../types/state.js';
 import { setHasError } from './app-process/app-process.slice';
 import { processErrorHandle } from '../services/proces-error-handle';
 
-export const clearErrorAction = createAsyncThunk(
+export const clearErrorAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch;
+  state: RootState;
+  extra: AxiosInstance;
+}>(
   'error/clearError',
-  () => {
-    setTimeout(() => store.dispatch(setHasError(false)), TIMEOUT_SHOW_ERROR);
+  (_arg, {dispatch}) => {
+    setTimeout(() => dispatch(setHasError(false)), TIMEOUT_SHOW_ERROR);
   },
 );
 
