@@ -1,4 +1,3 @@
-import { store } from '../store';
 import { AxiosInstance } from 'axios';
 import { fetchOffers } from './action';
 import { AuthData } from '../types/auth-data';
@@ -7,13 +6,16 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { APIRoute, TIMEOUT_SHOW_ERROR } from '../const';
 import { saveToken, dropToken } from '../services/token';
 import { AppDispatch, RootState } from '../types/state.js';
-import { setHasError } from './app-process/app-process.slice';
-import { processErrorHandle } from '../services/proces-error-handle';
 
-export const clearErrorAction = createAsyncThunk(
+export const clearErrorAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch;
+  state: RootState;
+  extra: AxiosInstance;
+}>(
   'error/clearError',
-  () => {
-    setTimeout(() => store.dispatch(setHasError(false)), TIMEOUT_SHOW_ERROR);
+  async (_arg, {dispatch}) => {
+    await new Promise((resolve) => setTimeout(resolve, TIMEOUT_SHOW_ERROR));
+    dispatch({ type: 'appProcess/setHasError', payload: false });
   },
 );
 
@@ -44,7 +46,8 @@ export const loginAction = createAsyncThunk<UserData, AuthData, {
 
       return data;
     } catch (error) {
-      processErrorHandle();
+      dispatch({ type: 'appProcess/setHasError', payload: true });
+      dispatch(clearErrorAction());
       throw error;
     }
   },
