@@ -10,6 +10,7 @@ const mockStore = configureMockStore();
 
 vi.mock('../../hooks/store', () => ({
   useAppSelector: vi.fn(),
+  useAppDispatch: vi.fn(),
 }));
 
 vi.mock('../../services/token', () => ({
@@ -17,7 +18,7 @@ vi.mock('../../services/token', () => ({
 }));
 
 import { getToken } from '../../services/token';
-import { useAppSelector } from '../../hooks/store';
+import { useAppSelector, useAppDispatch } from '../../hooks/store';
 
 const mockGetToken = vi.mocked(getToken) as MockedFunction<() => string | null>;
 
@@ -26,6 +27,7 @@ const TestComponent = () => <div>Protected Content</div>;
 describe('Component: PrivateRoute', () => {
   it('should render children when user is authorized', () => {
     vi.mocked(useAppSelector).mockReturnValue(AuthorizationStatus.Auth);
+    vi.mocked(useAppDispatch).mockReturnValue(vi.fn());
     vi.mocked(getToken).mockReturnValue('fake-token');
 
     const store = mockStore({});
@@ -45,6 +47,7 @@ describe('Component: PrivateRoute', () => {
 
   it('should render Spinner when authorization status is unknown but token exists', () => {
     vi.mocked(useAppSelector).mockReturnValue(AuthorizationStatus.Unknown);
+    vi.mocked(useAppDispatch).mockReturnValue(vi.fn());
     vi.mocked(getToken).mockReturnValue('fake-token');
 
     const store = mockStore({});
@@ -66,6 +69,7 @@ describe('Component: PrivateRoute', () => {
 
   it('should redirect to login when user is not authorized', () => {
     vi.mocked(useAppSelector).mockReturnValue(AuthorizationStatus.NoAuth);
+    vi.mocked(useAppDispatch).mockReturnValue(vi.fn());
     mockGetToken.mockReturnValue(null);
 
     const store = mockStore({});
@@ -85,6 +89,7 @@ describe('Component: PrivateRoute', () => {
 
   it('should redirect to login when authorization status is unknown and no token', () => {
     vi.mocked(useAppSelector).mockReturnValue(AuthorizationStatus.Unknown);
+    vi.mocked(useAppDispatch).mockReturnValue(vi.fn());
     mockGetToken.mockReturnValue(null);
 
     const store = mockStore({});

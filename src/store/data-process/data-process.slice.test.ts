@@ -165,10 +165,10 @@ describe('DataProcess Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set "isLoading" to "true" with "leaveComment.pending" action', () => {
+  it('should set "isSubmittingComment" to "true" with "leaveComment.pending" action', () => {
     const expectedState = {
       ...initialState,
-      isLoading: true,
+      isSubmittingComment: true,
       hasError: false,
     };
 
@@ -177,17 +177,17 @@ describe('DataProcess Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should add new comment to "comments" array, "isLoading" to "false" with "leaveComment.fulfilled" action', () => {
+  it('should add new comment to "comments" array, "isSubmittingComment" to "false" with "leaveComment.fulfilled" action', () => {
     const fakeReview = makeFakeReview();
     const existingReviews = [makeFakeReview()];
     const expectedState = {
       ...initialState,
       comments: [fakeReview, ...existingReviews],
-      isLoading: false,
+      isSubmittingComment: false,
     };
 
     const result = dataProcess.reducer(
-      { ...initialState, comments: existingReviews, isLoading: true },
+      { ...initialState, comments: existingReviews, isSubmittingComment: true },
       leaveComment.fulfilled(fakeReview, '', { offerId: '1', comment: 'test', rating: 5 })
     );
 
