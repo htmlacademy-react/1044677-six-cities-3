@@ -2,8 +2,8 @@ import { memo } from 'react';
 import { Offer } from '../../types/offer';
 import { toggleFavorite } from '../../store/action';
 import { Link, useNavigate } from 'react-router-dom';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { AppRoute, AuthorizationStatus, RATING_MULTIPLIER } from '../../const';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 type PlaceCardProps = {
@@ -62,7 +62,7 @@ function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Ele
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${rating * RATING_MULTIPLIER}%`}}></span>
+            <span style={{width: `${Math.round(rating) * 20}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
