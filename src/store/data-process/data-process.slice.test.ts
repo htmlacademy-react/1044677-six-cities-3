@@ -5,10 +5,12 @@ import { fetchOffers, fetchOfferById, fetchNearbyOffers, fetchComments, leaveCom
 describe('DataProcess Slice', () => {
   const initialState = {
     allOffers: [],
+    favoriteOffers: [],
     currentOffer: null,
     nearbyOffers: [],
     comments: [],
     isLoading: false,
+    isSubmittingComment: false,
     hasError: false,
   };
 

@@ -1,17 +1,17 @@
 import { useParams } from 'react-router-dom';
 import { leaveComment } from '../../store/action';
-import { useAppDispatch } from '../../hooks/store';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { useState, ChangeEvent, FormEvent, Fragment, memo } from 'react';
 import { MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH, MIN_RATING, RATING_TITLES } from '../../const';
 
 function ReviewForm(): JSX.Element {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
+  const isSubmittingComment = useAppSelector((state) => state.DATA.isSubmittingComment);
   const [formData, setFormData] = useState({rating: 0, review: ''});
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [commentError, setCommentError] = useState<string | null>(null);
   const isFormValid = formData.rating > 0 && formData.review.length >= MIN_COMMENT_LENGTH && formData.review.length <= MAX_COMMENT_LENGTH;
-  const isDisabled = !isFormValid || isSubmitting;
+  const isDisabled = !isFormValid || isSubmittingComment;
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -35,7 +35,6 @@ function ReviewForm(): JSX.Element {
     }
 
     setCommentError('');
-    setIsSubmitting(true);
 
     dispatch(leaveComment({
       offerId: id,
@@ -48,9 +47,6 @@ function ReviewForm(): JSX.Element {
       })
       .catch(() => {
         setCommentError('Failed to submit comment. Please try again.');
-      })
-      .finally(() => {
-        setIsSubmitting(false);
       });
   };
 
@@ -69,7 +65,7 @@ function ReviewForm(): JSX.Element {
               type="radio"
               checked={formData.rating === value}
               onChange={handleRatingChange}
-              disabled={isSubmitting}
+              disabled={isSubmittingComment}
             />
             <label
               htmlFor={`${value}-stars`}
@@ -95,7 +91,7 @@ function ReviewForm(): JSX.Element {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={formData.review}
         onChange={handleReviewChange}
-        disabled={isSubmitting}
+        disabled={isSubmittingComment}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
@@ -106,7 +102,7 @@ function ReviewForm(): JSX.Element {
           type="submit"
           disabled={isDisabled}
         >
-          {isSubmitting ? 'Submitting...' : 'Submit'}
+          {isSubmittingComment ? 'Submitting...' : 'Submit'}
         </button>
       </div>
     </form>

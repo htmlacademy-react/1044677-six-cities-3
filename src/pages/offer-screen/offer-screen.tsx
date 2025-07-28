@@ -12,7 +12,7 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyOffersList from '../../components/nearby-offers-list/nearby-offers-list';
 import { fetchComments, fetchOfferById, fetchNearbyOffers } from '../../store/action';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
-import { CITIES, AuthorizationStatus, AppRoute, MAX_NEARBY_OFFERS, MAX_COMMENTS, RATING_MULTIPLIER } from '../../const';
+import { CITIES, AuthorizationStatus, AppRoute, MAX_NEARBY_OFFERS, MAX_COMMENTS } from '../../const';
 import { getComments, getCurrentOffer, getDataIsLoading, getNearbyOffers } from '../../store/data-process/data-process.selectors';
 
 function OfferScreen(): JSX.Element {
@@ -91,7 +91,7 @@ function OfferScreen(): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOffer?.images.map((image) => (
+              {currentOffer?.images.slice(0, 6).map((image) => (
                 <div className="offer__image-wrapper" key={image}>
                   <img className="offer__image" src={image} alt={currentOffer?.title} />
                 </div>
@@ -122,7 +122,7 @@ function OfferScreen(): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: `${currentOffer?.rating ? currentOffer.rating * RATING_MULTIPLIER : 0}%`}}></span>
+                  <span style={{width: `${currentOffer?.rating ? Math.round(currentOffer.rating) * 20 : 0}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
@@ -155,15 +155,17 @@ function OfferScreen(): JSX.Element {
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                  <div className={`offer__avatar-wrapper ${currentOffer?.host.isPro ? 'offer__avatar-wrapper--pro' : ''} user__avatar-wrapper`}>
                     <img className="offer__avatar user__avatar" src={currentOffer?.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
                   </div>
                   <span className="offer__user-name">
                     {currentOffer?.host.name}
                   </span>
-                  <span className="offer__user-status">
-                    {currentOffer?.host.isPro ? 'Pro' : ''}
-                  </span>
+                  {currentOffer?.host.isPro && (
+                    <span className="offer__user-status">
+                      Pro
+                    </span>
+                  )}
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { Helmet } from 'react-helmet-async';
@@ -5,8 +6,9 @@ import { RATING_MULTIPLIER } from '../../const';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { toggleFavorite } from '../../store/action';
+import { fetchFavoriteOffers } from '../../store/action';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { getAllOffers } from '../../store/data-process/data-process.selectors';
+import { getFavoriteOffers } from '../../store/data-process/data-process.selectors';
 
 function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
   const dispatch = useAppDispatch();
@@ -84,9 +86,13 @@ function CityOffers({city, offers}: {city: string; offers: Offer[]}): JSX.Elemen
 }
 
 function FavoritesScreen(): JSX.Element {
-  const allOffers = useAppSelector(getAllOffers);
-  const favoriteOffers = allOffers.filter((offer) => offer.isFavorite);
+  const dispatch = useAppDispatch();
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
   const cities = Array.from(new Set(favoriteOffers.map((offer) => offer.city.name)));
+
+  useEffect(() => {
+    dispatch(fetchFavoriteOffers());
+  }, [dispatch]);
 
   return (
     <div className={`page ${favoriteOffers.length === 0 ? 'page--favorites-empty' : ''}`}>

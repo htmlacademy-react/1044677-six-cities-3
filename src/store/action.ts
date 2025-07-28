@@ -11,6 +11,12 @@ export const fetchOffers = createAsyncThunk<Offers, void, {extra: AxiosInstance}
   return response.data;
 });
 
+export const fetchFavoriteOffers = createAsyncThunk<Offers, void, {extra: AxiosInstance}>
+('offers/fetchFavoriteOffers', async (_arg, { extra: api }) => {
+  const response = await api.get<Offers>(APIRoute.Favorite);
+  return response.data;
+});
+
 export const fetchOfferById = createAsyncThunk<Offer, string, {extra: AxiosInstance}>
 ('offers/fetchOfferById', async (offerId, { extra: api }) => {
   const response = await api.get<Offer>(`${APIRoute.Offers}/${offerId}`);
