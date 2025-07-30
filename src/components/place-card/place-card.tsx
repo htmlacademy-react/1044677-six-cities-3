@@ -1,9 +1,9 @@
 import { memo } from 'react';
 import { Offer } from '../../types/offer';
-import { toggleFavorite } from '../../store/action';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
+import { toggleFavorite, fetchFavoriteOffers } from '../../store/action';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 type PlaceCardProps = {
@@ -19,7 +19,13 @@ function PlaceCard({offer, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Ele
   const {id, title, type, price, isPremium, isFavorite, previewImage, rating} = offer;
 
   const handleToggleFavorite = () => {
-    dispatch(toggleFavorite({offerId: id, isFavorite}));
+    dispatch(toggleFavorite({offerId: id, isFavorite}))
+      .unwrap()
+      .then(() => {
+        dispatch(fetchFavoriteOffers());
+      })
+      .catch(() => {
+      });
   };
 
   return (

@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { Offer } from '../../types/offer';
 import { Link, useNavigate } from 'react-router-dom';
-import { toggleFavorite } from '../../store/action';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
+import { toggleFavorite, fetchFavoriteOffers } from '../../store/action';
 import { AppRoute, AuthorizationStatus, RATING_MULTIPLIER } from '../../const';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
@@ -17,7 +17,13 @@ function NearbyPlaceCard({offer}: NearbyPlaceCardProps): JSX.Element {
   const {id, previewImage, price, rating, title, type, isPremium, isFavorite} = offer;
 
   const handleToggleFavorite = () => {
-    dispatch(toggleFavorite({offerId: id, isFavorite}));
+    dispatch(toggleFavorite({offerId: id, isFavorite}))
+      .unwrap()
+      .then(() => {
+        dispatch(fetchFavoriteOffers());
+      })
+      .catch(() => {
+      });
   };
 
   return (

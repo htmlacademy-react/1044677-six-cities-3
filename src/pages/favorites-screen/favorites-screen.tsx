@@ -5,16 +5,22 @@ import { Helmet } from 'react-helmet-async';
 import { RATING_MULTIPLIER } from '../../const';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import { toggleFavorite } from '../../store/action';
-import { fetchFavoriteOffers } from '../../store/action';
+import Spinner from '../../components/spinner/spinner';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { getFavoriteOffers } from '../../store/data-process/data-process.selectors';
+import { toggleFavorite, fetchFavoriteOffers } from '../../store/action';
+import { getFavoriteOffers, getDataIsLoading } from '../../store/data-process/data-process.selectors';
 
 function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
   const dispatch = useAppDispatch();
 
   const handleToggleFavorite = () => {
-    dispatch(toggleFavorite({offerId: offer.id, isFavorite: offer.isFavorite}));
+    dispatch(toggleFavorite({offerId: offer.id, isFavorite: offer.isFavorite}))
+      .unwrap()
+      .then(() => {
+        dispatch(fetchFavoriteOffers());
+      })
+      .catch(() => {
+      });
   };
 
   return (
@@ -88,11 +94,29 @@ function CityOffers({city, offers}: {city: string; offers: Offer[]}): JSX.Elemen
 function FavoritesScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const favoriteOffers = useAppSelector(getFavoriteOffers);
+  const isLoading = useAppSelector(getDataIsLoading);
   const cities = Array.from(new Set(favoriteOffers.map((offer) => offer.city.name)));
 
   useEffect(() => {
     dispatch(fetchFavoriteOffers());
   }, [dispatch]);
+
+  if (isLoading) {
+    return (
+      <div className="page">
+        <Helmet>
+          <title>6 cities: favorites</title>
+        </Helmet>
+        <Header/>
+        <main className="page__main page__main--favorites">
+          <div className="page__favorites-container container">
+            <Spinner />
+          </div>
+        </main>
+        <Footer/>
+      </div>
+    );
+  }
 
   return (
     <div className={`page ${favoriteOffers.length === 0 ? 'page--favorites-empty' : ''}`}>
