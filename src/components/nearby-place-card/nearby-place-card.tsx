@@ -73,7 +73,7 @@ function NearbyPlaceCard({offer}: NearbyPlaceCardProps): JSX.Element {
             {title}
           </Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{type.charAt(0).toUpperCase() + type.slice(1)}</p>
       </div>
     </article>
   );

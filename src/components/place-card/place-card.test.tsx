@@ -1,7 +1,7 @@
 import PlaceCard from './place-card';
 import { Provider } from 'react-redux';
-import { describe, it, expect, vi } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect, vi } from 'vitest';
 import { makeFakeOffer } from '../../utils/mocks';
 import { AuthorizationStatus } from '../../const';
 import { configureMockStore } from '@jedmao/redux-mock-store';
@@ -33,7 +33,7 @@ describe('Component: PlaceCard', () => {
     );
 
     expect(screen.getByText(fakeOffer.title)).toBeInTheDocument();
-    expect(screen.getByText(fakeOffer.type)).toBeInTheDocument();
+    expect(screen.getByText(fakeOffer.type.charAt(0).toUpperCase() + fakeOffer.type.slice(1))).toBeInTheDocument();
     expect(screen.getByText(`€${fakeOffer.price}`)).toBeInTheDocument();
     expect(screen.getByAltText('Place image')).toHaveAttribute('src', fakeOffer.previewImage);
   });
