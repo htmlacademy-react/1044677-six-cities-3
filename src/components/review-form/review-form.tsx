@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { leaveComment } from '../../store/action';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import { useState, ChangeEvent, FormEvent, Fragment, memo } from 'react';
 import { CommentLength, Rating, RATING_TITLES } from '../../const';
+import { useState, ChangeEvent, FormEvent, Fragment, memo } from 'react';
 
 function ReviewForm(): JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -95,7 +95,7 @@ function ReviewForm(): JSX.Element {
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
+          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">{CommentLength.Min} characters</b>.
         </p>
         <button
           className="reviews__submit form__submit button"
