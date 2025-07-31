@@ -25,7 +25,7 @@ function MainScreen(): JSX.Element {
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity.title);
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
 
-  const handleCityChange = (selectedCity: typeof DEFAULT_CITY) => {
+  const onCityChange = (selectedCity: typeof DEFAULT_CITY) => {
     dispatch(changeCity(selectedCity));
   };
 
@@ -80,7 +80,7 @@ function MainScreen(): JSX.Element {
         <div className="tabs">
           <Locations
             currentCity={currentCity}
-            handleCityChange ={handleCityChange}
+            onCityChange={onCityChange}
           />
         </div>
         <div className="cities">

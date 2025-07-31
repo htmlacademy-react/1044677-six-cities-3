@@ -4,10 +4,10 @@ import { City } from '../../types/city';
 
 type LocationsProps = {
   currentCity: City;
-  handleCityChange: (city: City) => void;
+  onCityChange: (city: City) => void;
 }
 
-function Locations({currentCity, handleCityChange}: LocationsProps): JSX.Element {
+function Locations({currentCity, onCityChange}: LocationsProps): JSX.Element {
   return (
     <section className="locations container">
       <ul className="locations__list tabs__list">
@@ -18,7 +18,7 @@ function Locations({currentCity, handleCityChange}: LocationsProps): JSX.Element
               href="#"
               onClick={(evt) => {
                 evt.preventDefault();
-                handleCityChange(city);
+                onCityChange(city);
               }}
             >
               <span>{city.title}</span>
