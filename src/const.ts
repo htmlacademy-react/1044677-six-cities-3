@@ -1,7 +1,5 @@
 import { City } from './types/city';
 
-export const MIN_RATING = 1;
-export const MAX_RATING = 5;
 export const MAX_COMMENTS = 10;
 export const MAX_NEARBY_OFFERS = 3;
 export const RATING_MULTIPLIER = 20;
@@ -59,6 +57,11 @@ export const RATING_TITLES = [
 export enum CommentLength {
   Min = 50,
   Max = 300
+}
+
+export enum Rating {
+  Min = 1,
+  Max = 5
 }
 
 export enum AppRoute {
