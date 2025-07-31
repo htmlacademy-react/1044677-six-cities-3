@@ -5,7 +5,6 @@ import Header from '../../components/header/header';
 import Spinner from '../../components/spinner/spinner';
 import { useNavigate, useParams } from 'react-router-dom';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import ReviewForm from '../../components/review-form/review-form';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import { toggleFavorite, fetchFavoriteOffers } from '../../store/action';
@@ -178,10 +177,11 @@ function OfferScreen(): JSX.Element {
                     {currentOffer?.description}
                   </p>
                 </div>
-                <ReviewsList reviews={commentsToShow} totalCount={comments.length} />
-                {isAuthorized ? (
-                  <ReviewForm />
-                ) : ''}
+                <ReviewsList
+                  reviews={commentsToShow}
+                  totalCount={comments.length}
+                  showForm={isAuthorized}
+                />
               </div>
             </div>
           </div>

@@ -153,7 +153,6 @@ export const dataProcess = createSlice({
         }));
 
         state.favoriteOffers = [];
-        state.comments = [];
       })
       .addCase(loginAction.fulfilled, (state) => {
         state.allOffers = state.allOffers.map((offer) => ({
@@ -171,7 +170,6 @@ export const dataProcess = createSlice({
         }));
 
         state.favoriteOffers = [];
-        state.comments = [];
       });
   },
 });
