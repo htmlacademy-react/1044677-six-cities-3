@@ -62,7 +62,7 @@ describe('Component: PrivateRoute', () => {
       </Provider>
     );
 
-    const spinner = document.querySelector('.spinner');
+    const spinner = screen.getByTestId('spinner');
     expect(spinner).toBeInTheDocument();
     expect(screen.queryByText('Protected Content')).not.toBeInTheDocument();
   });

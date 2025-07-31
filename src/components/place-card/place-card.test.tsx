@@ -127,7 +127,7 @@ describe('Component: PlaceCard', () => {
       </Provider>
     );
 
-    const ratingSpan = document.querySelector('.place-card__stars span');
+    const ratingSpan = screen.getByTestId('rating-stars');
     expect(ratingSpan).toHaveStyle({ width: '80%' });
   });
 

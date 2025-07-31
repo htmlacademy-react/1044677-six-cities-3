@@ -23,13 +23,17 @@ function Sort(): JSX.Element {
         className="places__sorting-type"
         tabIndex={0}
         onClick={handleSortClick}
+        data-testid="sorting-type"
       >
         {currentSort}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      <ul className={`places__options places__options--custom ${isOpen ? 'places__options--opened' : ''}`}>
+      <ul
+        className={`places__options places__options--custom ${isOpen ? 'places__options--opened' : ''}`}
+        data-testid="sorting-options"
+      >
         <li
           className={`places__option ${currentSort === SortType.Popular ? 'places__option--active' : ''}`}
           tabIndex={0}
