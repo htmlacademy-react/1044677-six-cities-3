@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import Map from '../../components/map/map';
 import { Helmet } from 'react-helmet-async';
+import { getRatingWidth } from '../../utils';
 import Header from '../../components/header/header';
 import Spinner from '../../components/spinner/spinner';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -127,7 +128,7 @@ function OfferScreen(): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: `${currentOffer?.rating ? Math.round(currentOffer.rating) * 20 : 0}%`}}></span>
+                  <span style={{width: `${currentOffer?.rating ? getRatingWidth(currentOffer.rating) : 0}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">{Math.round(currentOffer?.rating || 0)}</span>

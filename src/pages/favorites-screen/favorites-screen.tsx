@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { Helmet } from 'react-helmet-async';
-import { RATING_MULTIPLIER } from '../../const';
+import { getRatingWidth } from '../../utils';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import Spinner from '../../components/spinner/spinner';
@@ -59,7 +59,7 @@ function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span data-testid="rating-stars" style={{width: `${Math.round(offer.rating) * RATING_MULTIPLIER}%`}}></span>
+            <span data-testid="rating-stars" style={{width: `${getRatingWidth(offer.rating)}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

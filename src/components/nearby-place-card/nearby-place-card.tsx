@@ -1,9 +1,10 @@
 import { memo } from 'react';
 import { Offer } from '../../types/offer';
+import { getRatingWidth } from '../../utils';
 import { Link, useNavigate } from 'react-router-dom';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
 import { toggleFavorite, fetchFavoriteOffers } from '../../store/action';
-import { AppRoute, AuthorizationStatus, RATING_MULTIPLIER } from '../../const';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 type NearbyPlaceCardProps = {
@@ -64,7 +65,7 @@ function NearbyPlaceCard({offer}: NearbyPlaceCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span data-testid="rating-stars" style={{width: `${Math.round(rating) * RATING_MULTIPLIER}%`}}></span>
+            <span data-testid="rating-stars" style={{width: `${getRatingWidth(rating)}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
