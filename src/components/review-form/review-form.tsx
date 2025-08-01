@@ -44,6 +44,7 @@ function ReviewForm(): JSX.Element {
       .unwrap()
       .then(() => {
         setFormData({rating: 0, review: ''});
+        setCommentError(null);
       })
       .catch(() => {
         setCommentError('Failed to submit comment. Please try again.');
@@ -80,7 +81,18 @@ function ReviewForm(): JSX.Element {
         ))}
       </div>
       {commentError && (
-        <div className="reviews__error">
+        <div
+          className="reviews__error"
+          style={{
+            color: '#ff0000',
+            fontSize: '14px',
+            marginBottom: '10px',
+            padding: '8px',
+            backgroundColor: '#ffe6e6',
+            border: '1px solid #ffcccc',
+            borderRadius: '4px'
+          }}
+        >
           {commentError}
         </div>
       )}

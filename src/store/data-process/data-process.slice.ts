@@ -19,7 +19,11 @@ const initialState: DataProcess = {
 export const dataProcess = createSlice({
   name: NameSpace.Data,
   initialState,
-  reducers: {},
+  reducers: {
+    resetError: (state) => {
+      state.hasError = false;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchOffers.pending, (state) => {
@@ -94,7 +98,6 @@ export const dataProcess = createSlice({
       })
       .addCase(leaveComment.pending, (state) => {
         state.isSubmittingComment = true;
-        state.hasError = false;
       })
       .addCase(leaveComment.fulfilled, (state, action) => {
         state.isSubmittingComment = false;
@@ -102,7 +105,6 @@ export const dataProcess = createSlice({
       })
       .addCase(leaveComment.rejected, (state) => {
         state.isSubmittingComment = false;
-        state.hasError = true;
       })
       .addCase(toggleFavorite.fulfilled, (state, action: PayloadAction<Offer>) => {
         const updatedOffer = action.payload;
@@ -173,3 +175,5 @@ export const dataProcess = createSlice({
       });
   },
 });
+
+export const { resetError } = dataProcess.actions;

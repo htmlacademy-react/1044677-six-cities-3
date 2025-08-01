@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Sort from '../../components/sort/sort';
 import Header from '../../components/header/header';
@@ -11,6 +11,7 @@ import Locations from '../../components/locations/locations';
 import OffersList from '../../components/offers-list/offers-list';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { changeCity } from '../../store/app-process/app-process.slice';
+import { resetError } from '../../store/data-process/data-process.slice';
 import OffersListEmpty from '../../components/offers-list-empty/offers-list-empty';
 import { getCity, getSortType } from '../../store/app-process/app-process.selectors';
 import { getAllOffers, getDataIsLoading, getDataHasError } from '../../store/data-process/data-process.selectors';
@@ -24,6 +25,12 @@ function MainScreen(): JSX.Element {
   const isLoading = useAppSelector(getDataIsLoading);
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity.title);
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
+
+  useEffect(() => {
+    if (allOffers.length > 0 && hasError) {
+      dispatch(resetError());
+    }
+  }, [dispatch, allOffers.length, hasError]);
 
   const onCityChange = (selectedCity: typeof DEFAULT_CITY) => {
     dispatch(changeCity(selectedCity));
