@@ -33,16 +33,3 @@ export type Offer = {
 };
 
 export type Offers = Offer[];
-
-export type PlaceCard = {
-  id: string;
-  title: string;
-  type: string;
-  price: number;
-  previewImage: string;
-  city: OfferCity;
-  location: Location;
-  isFavorite: boolean;
-  isPremium: boolean;
-  rating: number;
-};
