@@ -131,7 +131,7 @@ function OfferScreen(): JSX.Element {
                   <span style={{width: `${currentOffer?.rating ? getRatingWidth(currentOffer.rating) : 0}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">{Math.round(currentOffer?.rating || 0)}</span>
+                <span className="offer__rating-value rating__value">{currentOffer?.rating || 0}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
