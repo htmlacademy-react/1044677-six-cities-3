@@ -10,4 +10,15 @@ export const getCurrentOffer = (state: RootState): Offer | null => state[NameSpa
 export const getComments = (state: RootState): Reviews => state[NameSpace.Data].comments;
 export const getDataHasError = (state: RootState): boolean => state[NameSpace.Data].hasError;
 export const getDataIsLoading = (state: RootState): boolean => state[NameSpace.Data].isLoading;
-export const getDataIsSubmittingComment = (state: RootState): boolean => state[NameSpace.Data].isSubmittingComment;
+export const getDataIsFavoriteOffersLoading = (state: RootState): boolean => state[NameSpace.Data].isFavoriteOffersLoading;
+
+export const getCurrentOffers = (state: RootState): Offers => {
+  const allOffers = getAllOffers(state);
+  const currentCity = state[NameSpace.App].city.title;
+  return allOffers.filter((offer: Offer) => offer.city.name === currentCity);
+};
+
+export const getFavoriteCities = (state: RootState): string[] => {
+  const favoriteOffers = getFavoriteOffers(state);
+  return Array.from(new Set(favoriteOffers.map((offer: Offer) => offer.city.name)));
+};

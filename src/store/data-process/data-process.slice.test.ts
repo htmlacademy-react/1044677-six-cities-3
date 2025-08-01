@@ -10,6 +10,7 @@ describe('DataProcess Slice', () => {
     nearbyOffers: [],
     comments: [],
     isLoading: false,
+    isFavoriteOffersLoading: false,
     isSubmittingComment: false,
     hasError: false,
   };

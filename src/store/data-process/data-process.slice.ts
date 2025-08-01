@@ -12,6 +12,7 @@ const initialState: DataProcess = {
   nearbyOffers: [],
   comments: [],
   isLoading: false,
+  isFavoriteOffersLoading: false,
   isSubmittingComment: false,
   hasError: false,
 };
@@ -39,15 +40,15 @@ export const dataProcess = createSlice({
         state.hasError = true;
       })
       .addCase(fetchFavoriteOffers.pending, (state) => {
-        state.isLoading = true;
+        state.isFavoriteOffersLoading = true;
         state.hasError = false;
       })
       .addCase(fetchFavoriteOffers.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.isFavoriteOffersLoading = false;
         state.favoriteOffers = action.payload;
       })
       .addCase(fetchFavoriteOffers.rejected, (state) => {
-        state.isLoading = false;
+        state.isFavoriteOffersLoading = false;
         state.hasError = true;
       })
       .addCase(fetchOfferById.pending, (state) => {

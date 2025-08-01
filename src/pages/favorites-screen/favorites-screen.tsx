@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { Offer } from '../../types/offer';
 import { Helmet } from 'react-helmet-async';
 import { getRatingWidth } from '../../utils';
@@ -8,9 +8,9 @@ import Footer from '../../components/footer/footer';
 import Spinner from '../../components/spinner/spinner';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
 import { toggleFavorite, fetchFavoriteOffers } from '../../store/action';
-import { getFavoriteOffers, getDataIsLoading } from '../../store/data-process/data-process.selectors';
+import { getDataIsFavoriteOffersLoading, getFavoriteOffers, getFavoriteCities } from '../../store/data-process/data-process.selectors';
 
-function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
+const FavoriteCard = React.memo(({offer}: { offer: Offer }): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const handleToggleFavorite = () => {
@@ -69,32 +69,34 @@ function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
       </div>
     </article>
   );
-}
+});
 
-function CityOffers({city, offers}: {city: string; offers: Offer[]}): JSX.Element {
-  return (
-    <li className="favorites__locations-items">
-      <div className="favorites__locations locations locations--current">
-        <div className="locations__item">
-          <a className="locations__item-link" href="#">
-            <span>{city}</span>
-          </a>
-        </div>
+FavoriteCard.displayName = 'FavoriteCard';
+
+const CityOffers = React.memo(({city, offers}: {city: string; offers: Offer[]}): JSX.Element => (
+  <li className="favorites__locations-items">
+    <div className="favorites__locations locations locations--current">
+      <div className="locations__item">
+        <a className="locations__item-link" href="#">
+          <span>{city}</span>
+        </a>
       </div>
-      <div className="favorites__places">
-        {offers.map((offer) => (
-          <FavoriteCard key={offer.id} offer={offer} />
-        ))}
-      </div>
-    </li>
-  );
-}
+    </div>
+    <div className="favorites__places">
+      {offers.map((offer) => (
+        <FavoriteCard key={offer.id} offer={offer} />
+      ))}
+    </div>
+  </li>
+));
+
+CityOffers.displayName = 'CityOffers';
 
 function FavoritesScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const favoriteOffers = useAppSelector(getFavoriteOffers);
-  const isLoading = useAppSelector(getDataIsLoading);
-  const cities = Array.from(new Set(favoriteOffers.map((offer) => offer.city.name)));
+  const favoriteCities = useAppSelector(getFavoriteCities);
+  const isLoading = useAppSelector(getDataIsFavoriteOffersLoading);
 
   useEffect(() => {
     dispatch(fetchFavoriteOffers());
@@ -139,7 +141,7 @@ function FavoritesScreen(): JSX.Element {
             <section className="favorites">
               <h1 className="favorites__title">Saved listing</h1>
               <ul className="favorites__list">
-                {cities.map((city) => (
+                {favoriteCities.map((city) => (
                   <CityOffers
                     key={city}
                     city={city}

@@ -24,6 +24,7 @@ export interface DataProcess {
   nearbyOffers: Offer[];
   comments: Review[];
   isLoading: boolean;
+  isFavoriteOffersLoading: boolean;
   isSubmittingComment: boolean;
   hasError: boolean;
 }
