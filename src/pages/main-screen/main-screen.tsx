@@ -52,12 +52,36 @@ function MainScreen(): JSX.Element {
         </Helmet>
         <Header/>
         <main className={`page__main page__main--index ${currentOffers.length === 0 ? 'page__main--index-empty' : ''}`}>
-          <div className="container">
-            <div className="cities__places-container">
-              <section className="cities__places places">
-                <h2 className="visually-hidden">Places</h2>
-                <Spinner />
+          <h1 className="visually-hidden">Cities</h1>
+          <div className="tabs">
+            <Locations
+              currentCity={currentCity}
+              onCityChange={onCityChange}
+            />
+          </div>
+          <div className="cities">
+            <div className={`cities__places-container ${currentOffers.length === 0 ? 'cities__places-container--empty' : ''} container`}>
+              <section className={`${currentOffers.length === 0 ? 'cities__no-places' : 'cities__places places'}`}>
+                {currentOffers.length === 0 ? <OffersListEmpty currentCity={currentCity} /> : (
+                  <>
+                    <h2 className="visually-hidden">Places</h2>
+                    <Spinner />
+                  </>
+                )}
               </section>
+              {currentOffers.length > 0 ? (
+                <div className="cities__right-section">
+                  <section className="cities__map map">
+                    <Map
+                      city={currentCity}
+                      offers={currentOffers}
+                      activeOffer={activeOffer}
+                    />
+                  </section>
+                </div>
+              ) : (
+                <div className="cities__right-section"></div>
+              )}
             </div>
           </div>
         </main>
