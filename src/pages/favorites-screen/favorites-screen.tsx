@@ -17,7 +17,6 @@ function FavoriteCard({offer}: { offer: Offer }): JSX.Element {
     dispatch(toggleFavorite({offerId: offer.id, isFavorite: offer.isFavorite}))
       .unwrap()
       .then(() => {
-        dispatch(fetchFavoriteOffers());
       })
       .catch(() => {
       });
