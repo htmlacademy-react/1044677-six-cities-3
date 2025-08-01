@@ -3,15 +3,15 @@ import { memo, useCallback } from 'react';
 import { logoutAction } from '../../store/api-actions';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { getAllOffers } from '../../store/data-process/data-process.selectors';
+import { getFavoriteOffers } from '../../store/data-process/data-process.selectors';
 import { getAuthorizationStatus, getUserEmail } from '../../store/user-process/user-process.selectors';
 
 function Header(): JSX.Element {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const userEmail = useAppSelector(getUserEmail);
-  const allOffers = useAppSelector(getAllOffers);
-  const favoritesCount = allOffers.filter((offer) => offer.isFavorite).length;
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
+  const favoritesCount = favoriteOffers.length;
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
   const handleLogout = useCallback(() => {

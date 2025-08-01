@@ -1,25 +1,25 @@
-import { AppRoute } from '../../const';
 import { Helmet } from 'react-helmet-async';
 import { getRandomCity } from '../../utils';
 import Logo from '../../components/logo/logo';
 import { useNavigate } from 'react-router-dom';
 import { loginAction } from '../../store/api-actions';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { FormEvent, useRef, useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { changeCity } from '../../store/app-process/app-process.slice';
-import { getHasError } from '../../store/app-process/app-process.selectors';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
-function LoginScreen(): JSX.Element {
+function LoginScreen(): JSX.Element | null {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const [passwordError, setPasswordError] = useState<string>('');
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [randomCity, setRandomCity] = useState(getRandomCity());
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const hasError = useAppSelector(getHasError);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -32,6 +32,12 @@ function LoginScreen(): JSX.Element {
       isMounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      navigate(AppRoute.Main);
+    }
+  }, [authorizationStatus, navigate]);
 
   const validatePassword = (password: string): boolean => {
     const hasLetter = /[a-zA-Z]/.test(password);
@@ -65,6 +71,9 @@ function LoginScreen(): JSX.Element {
         .unwrap()
         .then(() => {
           navigate(AppRoute.Main);
+        })
+        .catch(() => {
+          setHasError(true);
         });
     }
   };
@@ -73,6 +82,10 @@ function LoginScreen(): JSX.Element {
     dispatch(changeCity(randomCity));
     navigate(AppRoute.Main);
   };
+
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    return null;
+  }
 
   return (
     <div className="page page--gray page--login">

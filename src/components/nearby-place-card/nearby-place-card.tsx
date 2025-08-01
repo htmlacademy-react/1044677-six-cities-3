@@ -1,9 +1,10 @@
 import { memo } from 'react';
 import { Offer } from '../../types/offer';
+import { getRatingWidth } from '../../utils';
 import { Link, useNavigate } from 'react-router-dom';
-import { toggleFavorite } from '../../store/action';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { AppRoute, AuthorizationStatus, RATING_MULTIPLIER } from '../../const';
+import { toggleFavorite, fetchFavoriteOffers } from '../../store/action';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 type NearbyPlaceCardProps = {
@@ -17,7 +18,13 @@ function NearbyPlaceCard({offer}: NearbyPlaceCardProps): JSX.Element {
   const {id, previewImage, price, rating, title, type, isPremium, isFavorite} = offer;
 
   const handleToggleFavorite = () => {
-    dispatch(toggleFavorite({offerId: id, isFavorite}));
+    dispatch(toggleFavorite({offerId: id, isFavorite}))
+      .unwrap()
+      .then(() => {
+        dispatch(fetchFavoriteOffers());
+      })
+      .catch(() => {
+      });
   };
 
   return (
@@ -58,7 +65,7 @@ function NearbyPlaceCard({offer}: NearbyPlaceCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${rating * RATING_MULTIPLIER}%`}}></span>
+            <span data-testid="rating-stars" style={{width: `${getRatingWidth(rating)}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -67,7 +74,7 @@ function NearbyPlaceCard({offer}: NearbyPlaceCardProps): JSX.Element {
             {title}
           </Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{type.charAt(0).toUpperCase() + type.slice(1)}</p>
       </div>
     </article>
   );

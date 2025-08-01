@@ -27,7 +27,7 @@ describe('Component: Sort', () => {
     );
 
     expect(screen.getByText('Sort by')).toBeInTheDocument();
-    expect(document.querySelector('.places__sorting-type')).toHaveTextContent(SortType.Popular);
+    expect(screen.getByTestId('sorting-type')).toHaveTextContent(SortType.Popular);
   });
 
   it('should toggle dropdown when sort type is clicked', () => {
@@ -41,16 +41,16 @@ describe('Component: Sort', () => {
       </Provider>
     );
 
-    const sortTypeElement = document.querySelector('.places__sorting-type');
-    const dropdownList = document.querySelector('.places__options');
+    const sortTypeElement = screen.getByTestId('sorting-type');
+    const dropdownList = screen.getByTestId('sorting-options');
 
     expect(dropdownList).not.toHaveClass('places__options--opened');
 
-    fireEvent.click(sortTypeElement!);
+    fireEvent.click(sortTypeElement);
 
     expect(dropdownList).toHaveClass('places__options--opened');
 
-    fireEvent.click(sortTypeElement!);
+    fireEvent.click(sortTypeElement);
 
     expect(dropdownList).not.toHaveClass('places__options--opened');
   });
@@ -66,11 +66,12 @@ describe('Component: Sort', () => {
       </Provider>
     );
 
-    const sortTypeElement = document.querySelector('.places__sorting-type');
-    fireEvent.click(sortTypeElement!);
+    const sortTypeElement = screen.getByTestId('sorting-type');
+    fireEvent.click(sortTypeElement);
 
-    const activeOption = document.querySelector('.places__option--active');
-    expect(activeOption).toHaveTextContent('Price: low to high');
+    const activeOptions = screen.getAllByText('Price: low to high');
+    const activeOption = activeOptions.find((option) => option.tagName === 'LI');
+    expect(activeOption).toHaveClass('places__option--active');
   });
 
   it('should close dropdown when clicking outside', () => {
@@ -84,15 +85,15 @@ describe('Component: Sort', () => {
       </Provider>
     );
 
-    const sortTypeElement = document.querySelector('.places__sorting-type');
-    const dropdownList = document.querySelector('.places__options');
+    const sortTypeElement = screen.getByTestId('sorting-type');
+    const dropdownList = screen.getByTestId('sorting-options');
 
     expect(dropdownList).not.toHaveClass('places__options--opened');
 
-    fireEvent.click(sortTypeElement!);
+    fireEvent.click(sortTypeElement);
     expect(dropdownList).toHaveClass('places__options--opened');
 
-    fireEvent.click(sortTypeElement!);
+    fireEvent.click(sortTypeElement);
     expect(dropdownList).not.toHaveClass('places__options--opened');
   });
 });

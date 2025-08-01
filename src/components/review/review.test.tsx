@@ -42,7 +42,7 @@ describe('Component: Review', () => {
 
     render(<Review review={fakeReview} />);
 
-    const ratingSpan = document.querySelector('.reviews__stars span');
+    const ratingSpan = screen.getByTestId('rating-stars');
     expect(ratingSpan).toHaveStyle({ width: '80%' });
   });
 });

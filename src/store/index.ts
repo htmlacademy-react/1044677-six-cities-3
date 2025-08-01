@@ -1,3 +1,4 @@
+import { RootState } from '../types/state';
 import { createAPI } from '../services/api';
 import { rootReducer } from './root-reducer';
 import { configureStore } from '@reduxjs/toolkit';
@@ -13,3 +14,5 @@ export const store = configureStore({
       },
     }),
 });
+
+export type AppState = RootState;

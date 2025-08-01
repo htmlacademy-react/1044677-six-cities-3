@@ -2,13 +2,15 @@ import App from './app';
 import { AppRoute } from '../../const';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, it, expect, vi } from 'vitest';
+import { useAppSelector } from '../../hooks/store';
 import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 
 const mockStore = configureMockStore();
 vi.mock('../../hooks/store', () => ({
   useAppDispatch: () => vi.fn(),
+  useAppSelector: vi.fn(),
 }));
 
 vi.mock('../../pages/main-screen/main-screen', () => ({
@@ -49,6 +51,10 @@ describe('App Routing', () => {
     data: { allOffers: [], currentOffer: null, nearbyOffers: [], comments: [], isLoading: false, hasError: false },
     app: { city: { title: 'Paris', lat: 48.864716, lng: 2.349014, zoom: 13 }, sortType: 'Popular', isLoading: false, hasError: false, isDataLoaded: false, isCommentSending: false, isFavorite: false },
   };
+
+  beforeEach(() => {
+    vi.mocked(useAppSelector).mockReturnValue([]);
+  });
 
   it('should render Main Screen for root route', () => {
     const store = mockStore(mockStoreData);

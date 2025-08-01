@@ -48,7 +48,7 @@ export const loginAction = createAsyncThunk<UserData, AuthData, {
     } catch (error) {
       dispatch({ type: 'appProcess/setHasError', payload: true });
       dispatch(clearErrorAction());
-      throw error;
+      return Promise.reject(error);
     }
   },
 );

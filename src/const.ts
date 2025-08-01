@@ -1,12 +1,8 @@
 import { City } from './types/city';
 
-export const MIN_RATING = 1;
-export const MAX_RATING = 5;
 export const MAX_COMMENTS = 10;
 export const MAX_NEARBY_OFFERS = 3;
 export const RATING_MULTIPLIER = 20;
-export const MIN_COMMENT_LENGTH = 50;
-export const MAX_COMMENT_LENGTH = 300;
 export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const CITIES: City[] = [
@@ -57,6 +53,16 @@ export const RATING_TITLES = [
   { value: 2, title: 'badly' },
   { value: 1, title: 'terribly' }
 ];
+
+export enum CommentLength {
+  Min = 50,
+  Max = 300
+}
+
+export enum Rating {
+  Min = 1,
+  Max = 5
+}
 
 export enum AppRoute {
   Main = '/',

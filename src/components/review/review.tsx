@@ -1,4 +1,4 @@
-import { RATING_MULTIPLIER } from '../../const';
+import { getRatingWidth } from '../../utils';
 import { Review as ReviewType } from '../../types/review';
 
 type ReviewProps = {
@@ -27,7 +27,7 @@ function Review({review}: ReviewProps): JSX.Element {
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{width: `${rating * RATING_MULTIPLIER}%`}}></span>
+            <span data-testid="rating-stars" style={{width: `${getRatingWidth(rating)}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
